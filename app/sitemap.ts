@@ -1,8 +1,6 @@
 import type { MetadataRoute } from 'next'
 import { getBlogPosts } from '@/lib/notion'
 
-export const runtime = 'edge'
-
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const posts = await getBlogPosts()
 
