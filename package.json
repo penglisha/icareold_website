@@ -13,12 +13,13 @@
   },
   "dependencies": {
     "@notionhq/client": "^2.3.0",
+    "@opennextjs/cloudflare": "^1.19.6",
     "next": "^15.5.2",
     "react": "^19.2.5",
-    "react-dom": "^19.2.5"
+    "react-dom": "^19.2.5",
+    "wrangler": "^4.86.0"
   },
   "devDependencies": {
-    "@opennextjs/cloudflare": "^1.19.6",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
@@ -26,7 +27,6 @@
     "eslint": "^9",
     "eslint-config-next": "16.2.4",
     "tailwindcss": "^4",
-    "typescript": "^5",
-    "wrangler": "^4.86.0"
+    "typescript": "^5"
   }
 }
