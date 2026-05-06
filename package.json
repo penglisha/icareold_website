@@ -17,6 +17,7 @@
     "next": "^15.5.2",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
+    "typescript": "^5",
     "wrangler": "^4.86.0"
   },
   "devDependencies": {
@@ -26,7 +27,6 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.2.4",
-    "tailwindcss": "^4",
-    "typescript": "^5"
+    "tailwindcss": "^4"
   }
 }
