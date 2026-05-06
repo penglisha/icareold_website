@@ -1,10 +1,10 @@
+import React from 'react'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import { getBlogPostBySlug } from '@/lib/notion'
 import type { NotionBlock } from '@/lib/notion'
-import type { RichTextItemResponse } from '@notionhq/client/build/src/api-endpoints'
 
 export const runtime = 'edge'
 
@@ -20,54 +20,127 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 }
 
-function richText(texts: RichTextItemResponse[]) {
+// ─── Rich text renderer ───────────────────────────────────────────────────────
+
+interface RichTextItem {
+  plain_text: string
+  href?: string | null
+  annotations?: {
+    bold?: boolean
+    italic?: boolean
+    strikethrough?: boolean
+    code?: boolean
+  }
+}
+
+function richText(texts: RichTextItem[]) {
+  if (!texts?.length) return null
   return texts.map((t, i) => {
     let content: React.ReactNode = t.plain_text
-    if (t.annotations.code) content = <code key={i} style={{ background: '#f5f5f7', padding: '2px 6px', borderRadius: '4px', fontSize: '0.9em', fontFamily: 'monospace' }}>{content}</code>
-    if (t.annotations.bold) content = <strong key={i}>{content}</strong>
-    if (t.annotations.italic) content = <em key={i}>{content}</em>
-    if (t.annotations.strikethrough) content = <s key={i}>{content}</s>
-    if (t.href) content = <a key={i} href={t.href} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-blue)', textDecoration: 'none' }}>{content}</a>
+    if (t.annotations?.code)
+      content = (
+        <code
+          key={i}
+          style={{
+            background: '#f5f5f7',
+            padding: '2px 6px',
+            borderRadius: '4px',
+            fontSize: '0.9em',
+            fontFamily: 'monospace',
+          }}
+        >
+          {content}
+        </code>
+      )
+    if (t.annotations?.bold) content = <strong key={i}>{content}</strong>
+    if (t.annotations?.italic) content = <em key={i}>{content}</em>
+    if (t.annotations?.strikethrough) content = <s key={i}>{content}</s>
+    if (t.href)
+      content = (
+        <a
+          key={i}
+          href={t.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ color: 'var(--color-blue)', textDecoration: 'none' }}
+        >
+          {content}
+        </a>
+      )
     return <span key={i}>{content}</span>
   })
 }
 
+// ─── Block renderer ───────────────────────────────────────────────────────────
+
 function renderBlock(block: NotionBlock) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const b = block as any
   switch (block.type) {
     case 'paragraph':
       return (
         <p style={{ marginBottom: '20px', lineHeight: 1.8, color: 'var(--color-text-primary)' }}>
-          {richText(block.paragraph.rich_text)}
+          {richText(b.paragraph?.rich_text)}
         </p>
       )
     case 'heading_1':
       return (
-        <h1 style={{ fontSize: '28px', fontWeight: 600, letterSpacing: '-0.02em', margin: '40px 0 16px', color: 'var(--color-text-primary)' }}>
-          {richText(block.heading_1.rich_text)}
+        <h1
+          style={{
+            fontSize: '28px',
+            fontWeight: 600,
+            letterSpacing: '-0.02em',
+            margin: '40px 0 16px',
+            color: 'var(--color-text-primary)',
+          }}
+        >
+          {richText(b.heading_1?.rich_text)}
         </h1>
       )
     case 'heading_2':
       return (
-        <h2 style={{ fontSize: '22px', fontWeight: 600, letterSpacing: '-0.01em', margin: '36px 0 12px', color: 'var(--color-text-primary)' }}>
-          {richText(block.heading_2.rich_text)}
+        <h2
+          style={{
+            fontSize: '22px',
+            fontWeight: 600,
+            letterSpacing: '-0.01em',
+            margin: '36px 0 12px',
+            color: 'var(--color-text-primary)',
+          }}
+        >
+          {richText(b.heading_2?.rich_text)}
         </h2>
       )
     case 'heading_3':
       return (
-        <h3 style={{ fontSize: '18px', fontWeight: 600, margin: '28px 0 10px', color: 'var(--color-text-primary)' }}>
-          {richText(block.heading_3.rich_text)}
+        <h3
+          style={{
+            fontSize: '18px',
+            fontWeight: 600,
+            margin: '28px 0 10px',
+            color: 'var(--color-text-primary)',
+          }}
+        >
+          {richText(b.heading_3?.rich_text)}
         </h3>
       )
     case 'bulleted_list_item':
       return (
-        <li style={{ marginBottom: '8px', lineHeight: 1.7, color: 'var(--color-text-primary)', listStyleType: 'disc' }}>
-          {richText(block.bulleted_list_item.rich_text)}
+        <li
+          style={{
+            marginBottom: '8px',
+            lineHeight: 1.7,
+            color: 'var(--color-text-primary)',
+            listStyleType: 'disc',
+          }}
+        >
+          {richText(b.bulleted_list_item?.rich_text)}
         </li>
       )
     case 'numbered_list_item':
       return (
         <li style={{ marginBottom: '8px', lineHeight: 1.7, color: 'var(--color-text-primary)' }}>
-          {richText(block.numbered_list_item.rich_text)}
+          {richText(b.numbered_list_item?.rich_text)}
         </li>
       )
     case 'code':
@@ -85,7 +158,7 @@ function renderBlock(block: NotionBlock) {
             fontFamily: 'monospace',
           }}
         >
-          <code>{richText(block.code.rich_text)}</code>
+          <code>{richText(b.code?.rich_text)}</code>
         </pre>
       )
     case 'quote':
@@ -100,36 +173,29 @@ function renderBlock(block: NotionBlock) {
             lineHeight: 1.7,
           }}
         >
-          {richText(block.quote.rich_text)}
+          {richText(b.quote?.rich_text)}
         </blockquote>
       )
     case 'divider':
       return (
-        <hr
-          style={{
-            border: 'none',
-            borderTop: '1px solid var(--color-border)',
-            margin: '32px 0',
-          }}
-        />
+        <hr style={{ border: 'none', borderTop: '1px solid var(--color-border)', margin: '32px 0' }} />
       )
     case 'image': {
       const src =
-        block.image.type === 'external'
-          ? block.image.external.url
-          : block.image.file.url
-      const caption =
-        block.image.caption?.length > 0 ? richText(block.image.caption) : null
+        b.image?.type === 'external' ? b.image.external?.url : b.image?.file?.url
+      if (!src) return null
+      const captionTexts: RichTextItem[] = b.image?.caption ?? []
+      const captionStr = captionTexts.map((t) => t.plain_text).join('')
       return (
         <figure style={{ margin: '28px 0' }}>
           <Image
             src={src}
-            alt={caption ? String(block.image.caption[0]?.plain_text) : 'image'}
+            alt={captionStr || 'image'}
             width={680}
             height={400}
             style={{ borderRadius: '12px', width: '100%', height: 'auto', objectFit: 'cover' }}
           />
-          {caption && (
+          {captionStr && (
             <figcaption
               style={{
                 textAlign: 'center',
@@ -138,7 +204,7 @@ function renderBlock(block: NotionBlock) {
                 marginTop: '8px',
               }}
             >
-              {caption}
+              {captionStr}
             </figcaption>
           )}
         </figure>
@@ -157,26 +223,40 @@ function groupListItems(blocks: NotionBlock[]) {
     if (block.type === 'bulleted_list_item') {
       const items: React.ReactNode[] = []
       while (i < blocks.length && blocks[i].type === 'bulleted_list_item') {
-        items.push(<React.Fragment key={blocks[i].id}>{renderBlock(blocks[i])}</React.Fragment>)
+        items.push(
+          <React.Fragment key={blocks[i].id}>{renderBlock(blocks[i])}</React.Fragment>
+        )
         i++
       }
-      result.push(<ul key={`ul-${i}`} style={{ paddingLeft: '24px', marginBottom: '20px' }}>{items}</ul>)
+      result.push(
+        <ul key={`ul-${i}`} style={{ paddingLeft: '24px', marginBottom: '20px' }}>
+          {items}
+        </ul>
+      )
     } else if (block.type === 'numbered_list_item') {
       const items: React.ReactNode[] = []
       while (i < blocks.length && blocks[i].type === 'numbered_list_item') {
-        items.push(<React.Fragment key={blocks[i].id}>{renderBlock(blocks[i])}</React.Fragment>)
+        items.push(
+          <React.Fragment key={blocks[i].id}>{renderBlock(blocks[i])}</React.Fragment>
+        )
         i++
       }
-      result.push(<ol key={`ol-${i}`} style={{ paddingLeft: '24px', marginBottom: '20px' }}>{items}</ol>)
+      result.push(
+        <ol key={`ol-${i}`} style={{ paddingLeft: '24px', marginBottom: '20px' }}>
+          {items}
+        </ol>
+      )
     } else {
-      result.push(<React.Fragment key={block.id}>{renderBlock(block)}</React.Fragment>)
+      result.push(
+        <React.Fragment key={block.id}>{renderBlock(block)}</React.Fragment>
+      )
       i++
     }
   }
   return result
 }
 
-import React from 'react'
+// ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params
@@ -211,7 +291,12 @@ export default async function BlogPostPage({ params }: Props) {
         <span style={{ color: 'var(--color-border)' }}>|</span>
         <Link
           href="/"
-          style={{ fontWeight: 600, fontSize: '15px', color: 'var(--color-text-primary)', textDecoration: 'none' }}
+          style={{
+            fontWeight: 600,
+            fontSize: '15px',
+            color: 'var(--color-text-primary)',
+            textDecoration: 'none',
+          }}
         >
           iCareOld
         </Link>
@@ -219,7 +304,6 @@ export default async function BlogPostPage({ params }: Props) {
 
       {/* Article */}
       <article style={{ maxWidth: '680px', margin: '0 auto', padding: '60px 24px 80px' }}>
-        {/* Header */}
         <header style={{ marginBottom: '40px' }}>
           {post.tags.length > 0 && (
             <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '16px' }}>
@@ -252,20 +336,39 @@ export default async function BlogPostPage({ params }: Props) {
             {post.title}
           </h1>
           {post.summary && (
-            <p style={{ fontSize: '18px', color: 'var(--color-text-secondary)', lineHeight: 1.6, marginBottom: '20px' }}>
+            <p
+              style={{
+                fontSize: '18px',
+                color: 'var(--color-text-secondary)',
+                lineHeight: 1.6,
+                marginBottom: '20px',
+              }}
+            >
               {post.summary}
             </p>
           )}
-          <div style={{ display: 'flex', gap: '16px', fontSize: '13px', color: 'var(--color-text-tertiary)' }}>
+          <div
+            style={{
+              display: 'flex',
+              gap: '16px',
+              fontSize: '13px',
+              color: 'var(--color-text-tertiary)',
+            }}
+          >
             <span>{post.date}</span>
             <span>·</span>
             <span>预计 {post.readTime} 分钟阅读</span>
           </div>
         </header>
 
-        <hr style={{ border: 'none', borderTop: '1px solid var(--color-border)', marginBottom: '40px' }} />
+        <hr
+          style={{
+            border: 'none',
+            borderTop: '1px solid var(--color-border)',
+            marginBottom: '40px',
+          }}
+        />
 
-        {/* Content */}
         <div style={{ fontSize: '17px', lineHeight: 1.8 }}>
           {groupListItems(post.blocks)}
         </div>
