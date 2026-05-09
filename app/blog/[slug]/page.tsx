@@ -6,6 +6,8 @@ import { notFound } from 'next/navigation'
 import { getBlogPostBySlug } from '@/lib/notion'
 import type { NotionBlock } from '@/lib/notion'
 
+export const runtime = 'edge'
+
 type Props = { params: Promise<{ slug: string }> }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
