@@ -380,7 +380,7 @@ export default async function BlogPostPage({ params }: Props) {
         }}
       >
         <p style={{ fontSize: '13px', color: 'var(--color-text-tertiary)' }}>
-          © 2024 iCareOld · 用 AI 关爱每一个老人
+          © 2026–现在 [Lisa] · AI 产品经理个人站点 · 保留所有权利
         </p>
       </footer>
     </>
