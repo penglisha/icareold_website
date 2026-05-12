@@ -42,7 +42,7 @@ function notionFetch(path: string, body: unknown): Promise<Response> {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(body),
-    next: { revalidate: 3600 },
+    next: { revalidate: 60 },
   } as RequestInit)
 }
 
@@ -54,7 +54,7 @@ function notionFetchGet(path: string): Promise<Response> {
       Authorization: `Bearer ${token}`,
       'Notion-Version': '2022-06-28',
     },
-    next: { revalidate: 3600 },
+    next: { revalidate: 60 },
   } as RequestInit)
 }
 
