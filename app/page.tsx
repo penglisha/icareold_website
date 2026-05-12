@@ -317,9 +317,6 @@ export default async function HomePage() {
                       {post.date}
                     </span>
                     <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
-                      <span style={{ fontSize: '12px', color: 'var(--color-text-tertiary)' }}>
-                        {post.readTime} 分钟
-                      </span>
                       <span
                         style={{
                           fontSize: '11px',

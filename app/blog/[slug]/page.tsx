@@ -356,8 +356,6 @@ export default async function BlogPostPage({ params }: Props) {
             }}
           >
             <span>{post.date}</span>
-            <span>·</span>
-            <span>预计 {post.readTime} 分钟阅读</span>
           </div>
         </header>
 
