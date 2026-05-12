@@ -83,7 +83,7 @@ export default async function HomePage() {
               marginBottom: '20px',
             }}
           >
-            用 AI，关爱每一个老人
+            用 AI 解决真实问题，从 0 到 1。
           </h1>
           <p
             style={{
@@ -94,9 +94,7 @@ export default async function HomePage() {
               lineHeight: 1.6,
             }}
           >
-            记录真实的 AI 学习历程，构建有意义的工具。
-            <br />
-            从零开始，一步一步。
+            记录我从零学习 AI 产品设计的完整历程 —— 需求洞察、原型落地、工具搭建，一步一步。
           </p>
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
             <a
