@@ -210,9 +210,6 @@ export default function AboutPage() {
                   display: 'block',
                   margin: '0 auto 12px',
                 }}
-                onError={(e) => {
-                  (e.currentTarget as HTMLImageElement).style.display = 'none'
-                }}
               />
               <p style={{ fontSize: '13px', color: 'var(--color-text-tertiary)', margin: 0 }}>
                 扫码添加微信
