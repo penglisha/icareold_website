@@ -55,12 +55,12 @@ export default async function HomePage() {
           >
             博客
           </Link>
-          <a
-            href="mailto:hamiltonhgz@gmail.com"
+          <Link
+            href="/about"
             style={{ fontSize: '14px', color: 'var(--color-blue)', textDecoration: 'none' }}
           >
-            联系我
-          </a>
+            关于我
+          </Link>
         </div>
       </nav>
 
