@@ -1,45 +1,392 @@
 @import "tailwindcss";
 
+/* ─────────────────────────────────────────────────────────
+   DESIGN TOKENS
+───────────────────────────────────────────────────────── */
 :root {
-  --color-bg-primary: #fbfbfd;
-  --color-bg-secondary: #f5f5f7;
-  --color-bg-dark: #1d1d1f;
-  --color-text-primary: #1d1d1f;
-  --color-text-secondary: #6e6e73;
-  --color-text-tertiary: #86868b;
-  --color-blue: #0071e3;
-  --color-blue-hover: #0077ed;
-  --color-border: #d2d2d7;
-  --radius-pill: 980px;
-  --radius-card: 18px;
-  --radius-small: 8px;
-  --font-display: -apple-system, 'SF Pro Display', Inter, sans-serif;
-  --font-body: -apple-system, 'SF Pro Text', Inter, sans-serif;
+  /* Backgrounds */
+  --bg:   #060609;
+  --bg-1: #0c0c12;
+  --bg-2: #111118;
+  --bg-3: #16161f;
+
+  /* Borders */
+  --bd:   rgba(255,255,255,0.06);
+  --bd-2: rgba(255,255,255,0.11);
+  --bd-3: rgba(255,255,255,0.20);
+
+  /* Text */
+  --t1:   #f0f0fa;
+  --t2:   #9090b0;
+  --t3:   #4a4a62;
+
+  /* Accent — indigo */
+  --ac:        #7c6aff;
+  --ac-2:      #a78bfa;
+  --ac-dim:    rgba(124,106,255,0.08);
+  --ac-border: rgba(124,106,255,0.22);
+  --ac-glow:   rgba(124,106,255,0.28);
+
+  /* Typography */
+  --sans: -apple-system, 'Inter', 'SF Pro Display', system-ui, sans-serif;
+  --mono: ui-monospace, 'SF Mono', 'Cascadia Code', 'Fira Code', Consolas, monospace;
+
+  /* Radius */
+  --r-xs: 4px;
+  --r-sm: 6px;
+  --r:    10px;
+  --r-lg: 14px;
+  --r-xl: 20px;
+
+  /* Transition */
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Legacy aliases */
+  --color-bg-primary:     var(--bg);
+  --color-bg-secondary:   var(--bg-1);
+  --color-bg-dark:        var(--bg-2);
+  --color-text-primary:   var(--t1);
+  --color-text-secondary: var(--t2);
+  --color-text-tertiary:  var(--t3);
+  --color-blue:           var(--ac);
+  --color-blue-hover:     var(--ac-2);
+  --color-border:         var(--bd);
+  --radius-pill:          980px;
+  --radius-card:          var(--r);
+  --radius-small:         var(--r-sm);
 }
 
-* {
-  box-sizing: border-box;
+/* ─────────────────────────────────────────────────────────
+   BASE
+───────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 body {
-  background: var(--color-bg-primary);
-  color: var(--color-text-primary);
-  font-family: var(--font-body);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  background: var(--bg);
+  color: var(--t1);
+  font-family: var(--sans);
+  line-height: 1.6;
+  min-height: 100dvh;
 }
 
+/* ─────────────────────────────────────────────────────────
+   GRADIENT TEXT
+───────────────────────────────────────────────────────── */
+.text-gradient {
+  background: linear-gradient(160deg, #ffffff 0%, #7878a0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─────────────────────────────────────────────────────────
+   DOT GRID BACKGROUND
+───────────────────────────────────────────────────────── */
+.dot-grid {
+  background-image: radial-gradient(rgba(255,255,255,0.035) 1px, transparent 1px);
+  background-size: 26px 26px;
+}
+
+/* ─────────────────────────────────────────────────────────
+   HERO SCENE — orb radial glow
+───────────────────────────────────────────────────────── */
+.hero-scene {
+  background:
+    radial-gradient(ellipse 900px 560px at 50% -80px, rgba(124,106,255,0.16) 0%, transparent 65%),
+    radial-gradient(ellipse 500px 380px at 90% 90%,   rgba(124,106,255,0.05) 0%, transparent 60%),
+    var(--bg);
+}
+
+/* ─────────────────────────────────────────────────────────
+   CARD — premium gradient border
+───────────────────────────────────────────────────────── */
+.card-premium {
+  background:
+    linear-gradient(var(--bg-1), var(--bg-1)) padding-box,
+    linear-gradient(140deg,
+      rgba(124,106,255,0.30) 0%,
+      rgba(255,255,255,0.04) 45%,
+      rgba(124,106,255,0.10) 100%
+    ) border-box;
+  border: 1px solid transparent;
+  border-radius: var(--r-xl);
+  transition: background 0.22s var(--ease), box-shadow 0.22s var(--ease), transform 0.18s var(--ease);
+}
+.card-premium:hover {
+  background:
+    linear-gradient(var(--bg-2), var(--bg-2)) padding-box,
+    linear-gradient(140deg,
+      rgba(124,106,255,0.50) 0%,
+      rgba(255,255,255,0.08) 45%,
+      rgba(124,106,255,0.25) 100%
+    ) border-box;
+  box-shadow: 0 0 40px rgba(124,106,255,0.10), 0 16px 48px rgba(0,0,0,0.6);
+  transform: translateY(-2px);
+}
+
+/* ─────────────────────────────────────────────────────────
+   CARD — plain dark with border
+───────────────────────────────────────────────────────── */
+.card-hover {
+  border: 1px solid var(--bd);
+  transition: border-color 0.18s var(--ease), box-shadow 0.18s var(--ease), transform 0.18s var(--ease);
+}
+.card-hover:hover {
+  border-color: var(--bd-2);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+  transform: translateY(-2px);
+}
+
+/* ─────────────────────────────────────────────────────────
+   ROW HOVER
+───────────────────────────────────────────────────────── */
+.row-hover {
+  transition: background 0.12s var(--ease);
+}
+.row-hover:hover {
+  background: rgba(255,255,255,0.025) !important;
+}
+
+/* ─────────────────────────────────────────────────────────
+   BUTTONS
+───────────────────────────────────────────────────────── */
+.btn-glow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 22px;
+  background: var(--ac);
+  color: #fff;
+  border-radius: var(--r-sm);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  font-family: var(--sans);
+  letter-spacing: -0.01em;
+  box-shadow: 0 0 0 1px rgba(124,106,255,0.4), 0 4px 20px rgba(124,106,255,0.35);
+  transition: box-shadow 0.2s var(--ease), transform 0.15s var(--spring);
+}
+.btn-glow:hover {
+  box-shadow: 0 0 0 1px rgba(124,106,255,0.6), 0 4px 36px rgba(124,106,255,0.55);
+  transform: translateY(-1px);
+}
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 22px;
+  border: 1px solid var(--bd-2);
+  color: var(--t2);
+  border-radius: var(--r-sm);
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  font-family: var(--sans);
+  transition: border-color 0.15s, color 0.15s;
+}
+.btn-ghost:hover {
+  border-color: var(--bd-3);
+  color: var(--t1);
+}
+
+/* Legacy aliases */
+.btn-primary  { display: inline-flex; align-items: center; padding: 9px 20px; background: var(--t1); color: var(--bg); border-radius: var(--r-sm); font-size: 13px; font-weight: 600; text-decoration: none; transition: opacity 0.15s; font-family: var(--sans); }
+.btn-primary:hover  { opacity: 0.88; }
+.btn-secondary { display: inline-flex; align-items: center; padding: 9px 20px; border: 1px solid var(--bd-2); color: var(--t2); border-radius: var(--r-sm); font-size: 13px; font-weight: 500; text-decoration: none; transition: border-color 0.15s, color 0.15s; font-family: var(--sans); }
+.btn-secondary:hover { border-color: var(--bd-3); color: var(--t1); }
+
+/* ─────────────────────────────────────────────────────────
+   STATUS PILL (hero badge)
+───────────────────────────────────────────────────────── */
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 14px;
+  border: 1px solid var(--ac-border);
+  border-radius: 100px;
+  background: var(--ac-dim);
+  backdrop-filter: blur(8px);
+}
+
+/* ─────────────────────────────────────────────────────────
+   PULSE DOT
+───────────────────────────────────────────────────────── */
+@keyframes pulse-ring {
+  0%   { box-shadow: 0 0 0 0   rgba(124,106,255,0.7); }
+  70%  { box-shadow: 0 0 0 5px rgba(124,106,255,0);   }
+  100% { box-shadow: 0 0 0 0   rgba(124,106,255,0);   }
+}
+.pulse-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--ac-2);
+  flex-shrink: 0;
+  animation: pulse-ring 2.2s infinite;
+}
+
+/* ─────────────────────────────────────────────────────────
+   GLOW DOT (static)
+───────────────────────────────────────────────────────── */
+.glow-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--ac);
+  box-shadow: 0 0 7px 2px var(--ac-dim);
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+/* ─────────────────────────────────────────────────────────
+   TAG
+───────────────────────────────────────────────────────── */
+.tag {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.03em;
+  padding: 2px 7px;
+  border-radius: var(--r-xs);
+  border: 1px solid var(--bd);
+  color: var(--t3);
+  background: transparent;
+  display: inline-block;
+}
+
+/* ─────────────────────────────────────────────────────────
+   SECTION LABEL
+───────────────────────────────────────────────────────── */
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 40px;
+}
+.section-label-text {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--ac);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.section-label-line {
+  flex: 1;
+  height: 1px;
+  background: var(--bd);
+}
+
+/* ─────────────────────────────────────────────────────────
+   BADGE
+───────────────────────────────────────────────────────── */
+.badge-green {
+  font-family: var(--mono);
+  font-size: 10px;
+  padding: 2px 7px;
+  border-radius: var(--r-xs);
+  border: 1px solid rgba(52,199,89,0.22);
+  color: #34c759;
+  letter-spacing: 0.02em;
+}
+.badge-muted {
+  font-family: var(--mono);
+  font-size: 10px;
+  padding: 2px 7px;
+  border-radius: var(--r-xs);
+  border: 1px solid var(--bd);
+  color: var(--t3);
+  letter-spacing: 0.02em;
+}
+
+/* ─────────────────────────────────────────────────────────
+   HERO ANIMATION
+───────────────────────────────────────────────────────── */
 @keyframes hero-fade-up {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.hero-animate {
+  animation: hero-fade-up 0.8s var(--ease) forwards;
+}
+.hero-animate-delay {
+  opacity: 0;
+  animation: hero-fade-up 0.8s var(--ease) 0.15s forwards;
+}
+.hero-animate-delay-2 {
+  opacity: 0;
+  animation: hero-fade-up 0.8s var(--ease) 0.28s forwards;
 }
 
-.hero-animate {
-  animation: hero-fade-up 0.6s ease-out forwards;
+/* ─────────────────────────────────────────────────────────
+   STAT CARD
+───────────────────────────────────────────────────────── */
+.stat-divider {
+  border-right: 1px solid var(--bd);
 }
+
+/* ─────────────────────────────────────────────────────────
+   PROSE (blog body)
+───────────────────────────────────────────────────────── */
+.prose p      { margin-bottom: 22px; line-height: 1.85; color: var(--t2); }
+.prose h1,
+.prose h2,
+.prose h3     { color: var(--t1); letter-spacing: -0.025em; }
+.prose h1     { font-size: 26px; font-weight: 700; margin: 44px 0 16px; }
+.prose h2     { font-size: 20px; font-weight: 600; margin: 36px 0 12px; }
+.prose h3     { font-size: 16px; font-weight: 600; margin: 28px 0 10px; }
+.prose ul,
+.prose ol     { padding-left: 22px; margin-bottom: 22px; }
+.prose li     { line-height: 1.75; color: var(--t2); margin-bottom: 6px; }
+.prose code   {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  background: var(--bg-2);
+  border: 1px solid var(--bd);
+  padding: 1px 5px;
+  border-radius: var(--r-xs);
+  color: var(--ac-2);
+}
+.prose pre    {
+  background: var(--bg-1);
+  border: 1px solid var(--bd);
+  border-radius: var(--r);
+  padding: 20px 24px;
+  margin: 24px 0;
+  overflow-x: auto;
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--t2);
+}
+.prose pre code { background: none; border: none; padding: 0; font-size: inherit; }
+.prose blockquote {
+  border-left: 2px solid var(--ac);
+  padding-left: 20px;
+  margin: 24px 0;
+  color: var(--t2);
+  font-style: italic;
+}
+.prose hr { border: none; border-top: 1px solid var(--bd); margin: 36px 0; }
+.prose a  { color: var(--ac); text-decoration: none; border-bottom: 1px solid var(--ac-border); transition: border-color 0.15s; }
+.prose a:hover { border-color: var(--ac); }
+
+/* ─────────────────────────────────────────────────────────
+   NAV LINK HOVER UNDERLINE
+───────────────────────────────────────────────────────── */
+.nav-link {
+  position: relative;
+  font-size: 13px;
+  color: var(--t2);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.nav-link:hover { color: var(--t1); }
