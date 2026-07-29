@@ -5,6 +5,7 @@ export interface Project {
   tags: string[]
   url: string
   emoji: string
+  image: string
   status: string
   order: number
 }
@@ -30,6 +31,16 @@ export interface NotionBlock {
 
 function richTextToString(arr: Array<{ plain_text: string }>): string {
   return arr?.map((t) => t.plain_text).join('') ?? ''
+}
+
+// Notion's "Files & media" property returns an array; each entry is either
+// an externally-linked URL or a file Notion hosts itself (S3 URL that
+// expires after ~1 hour - fine here since pages revalidate every 60s).
+type NotionFile = { type: 'external' | 'file'; external?: { url: string }; file?: { url: string } }
+function firstFileUrl(arr: NotionFile[]): string {
+  const first = arr?.[0]
+  if (!first) return ''
+  return first.type === 'external' ? first.external?.url ?? '' : first.file?.url ?? ''
 }
 
 function notionFetch(path: string, body: unknown): Promise<Response> {
@@ -89,6 +100,7 @@ export async function getProjects(): Promise<Project[]> {
       tags: (prop(page, 'Tags')?.multi_select ?? []).map((t: { name: string }) => t.name),
       url: prop(page, 'URL')?.url ?? '',
       emoji: richTextToString(prop(page, 'Emoji')?.rich_text ?? []) || '🚀',
+      image: firstFileUrl(prop(page, 'Image')?.files ?? []),
       status: prop(page, 'Status')?.select?.name ?? '',
       order: prop(page, 'Order')?.number ?? 999,
     }))

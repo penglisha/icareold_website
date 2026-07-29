@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { getProjects, getBlogPosts } from '@/lib/notion'
+import NavBar from './NavBar'
+import CloudShader from './CloudShader'
 
 export const runtime = 'edge'
 
@@ -14,275 +16,203 @@ export default async function HomePage() {
 
   return (
     <>
-      {/* ── NAV ─────────────────────────────────────────── */}
-      <nav style={{
-        position: 'sticky', top: 0, zIndex: 100,
-        height: '56px',
-        background: 'rgba(6,6,9,0.75)',
-        backdropFilter: 'blur(24px)',
-        WebkitBackdropFilter: 'blur(24px)',
-        borderBottom: '1px solid var(--bd)',
-        display: 'flex', alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: '0 32px',
+      <NavBar />
+
+      {/* ── HERO ── */}
+      <header style={{
+        position: 'relative', overflow: 'hidden',
+        display: 'flex', flexDirection: 'column', alignItems: 'center',
+        padding: '160px 32px 96px', textAlign: 'center',
       }}>
-        <Link href="/" style={{
-          fontWeight: 700, fontSize: '15px',
-          color: 'var(--t1)', textDecoration: 'none',
-          letterSpacing: '-0.02em',
-          display: 'flex', alignItems: 'center', gap: '8px',
-        }}>
-          iCareOld
-        </Link>
-        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-          <Link href="#projects" className="nav-link" style={{ padding: '6px 12px' }}>作品集</Link>
-          <Link href="#blog"     className="nav-link" style={{ padding: '6px 12px' }}>博客</Link>
-          <Link href="/about" style={{
-            fontSize: '13px', color: 'var(--t1)', textDecoration: 'none',
-            padding: '6px 14px',
-            border: '1px solid var(--bd-2)',
-            borderRadius: 'var(--r-sm)',
-            background: 'rgba(255,255,255,0.04)',
-            transition: 'background 0.15s, border-color 0.15s',
-            marginLeft: '4px',
+        <CloudShader />
+
+        <div style={{ position: 'relative', zIndex: 10, maxWidth: '820px', margin: '0 auto' }}>
+          {/* Eyebrow */}
+          <div className="hero-animate" style={{
+            display: 'inline-flex', alignItems: 'center', gap: '8px',
+            padding: '6px 16px', borderRadius: 'var(--r-pill)',
+            background: 'rgba(255,255,255,0.6)', backdropFilter: 'blur(10px)',
+            border: '1px solid var(--hairline-strong)',
+            marginBottom: '32px', boxShadow: '0 2px 8px rgba(0,0,0,0.03)',
           }}>
-            关于我
-          </Link>
-        </div>
-      </nav>
-
-      {/* ── HERO ─────────────────────────────────────────── */}
-      <section className="hero-scene dot-grid" style={{
-        position: 'relative',
-        padding: '120px 24px 100px',
-        textAlign: 'center',
-        overflow: 'hidden',
-      }}>
-        {/* Bottom fade */}
-        <div style={{
-          position: 'absolute', bottom: 0, left: 0, right: 0, height: '120px',
-          background: 'linear-gradient(to bottom, transparent, var(--bg))',
-          pointerEvents: 'none',
-        }} />
-
-        <div style={{ maxWidth: '780px', margin: '0 auto', position: 'relative' }}>
-
-          {/* Status pill */}
-          <div className="hero-animate" style={{ marginBottom: '36px', display: 'flex', justifyContent: 'center' }}>
-            <div className="status-pill">
-              <span className="pulse-dot" />
-              <span style={{
-                fontFamily: 'var(--mono)', fontSize: '11px',
-                color: 'var(--ac-2)', letterSpacing: '0.08em',
-              }}>
-                BUILDING IN PUBLIC · 2026
-              </span>
-            </div>
+            <span className="status-pulse" style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--primary)' }} />
+            <span className="eyebrow" style={{ marginBottom: 0 }}>Building in Public · 2026</span>
           </div>
 
           {/* Headline */}
-          <h1 className="hero-animate-delay text-gradient" style={{
-            fontSize: 'clamp(40px, 7vw, 72px)',
+          <h1 className="hero-animate-delay" style={{
+            fontFamily: 'var(--font-display)',
+            fontSize: 'clamp(36px, 6vw, 64px)',
             fontWeight: 800,
-            letterSpacing: '-0.05em',
-            lineHeight: 1.05,
-            marginBottom: '28px',
+            lineHeight: 1.15,
+            letterSpacing: '-0.02em',
+            color: 'var(--ink)',
+            marginBottom: '24px',
           }}>
             做能用的 AI 工具，
             <br />
-            把构建过程全部记录下来
+            <span style={{
+              background: 'linear-gradient(90deg, var(--primary), var(--brand-secure))',
+              WebkitBackgroundClip: 'text',
+              backgroundClip: 'text',
+              color: 'transparent',
+            }}>
+              把构建过程全部记录下来
+            </span>
           </h1>
 
-          {/* Tagline */}
-          <div className="hero-animate-delay-2" style={{ marginBottom: '44px' }}>
-            <p style={{
-              fontFamily: 'var(--mono)',
-              fontSize: '13px', color: 'var(--t2)',
-              letterSpacing: '0.04em',
-              lineHeight: 2,
-            }}>
-              浙大硕士&nbsp;&nbsp;·&nbsp;&nbsp;十年产品经验&nbsp;&nbsp;·&nbsp;&nbsp;从零学 AI 开发&nbsp;&nbsp;·&nbsp;&nbsp;Building in Public
-            </p>
-          </div>
+          {/* Subhead */}
+          <p className="hero-animate-delay-2" style={{
+            fontSize: '18px', fontWeight: 400,
+            lineHeight: 1.6, letterSpacing: '0.01em',
+            color: 'var(--ink-muted)',
+            maxWidth: '640px', margin: '0 auto 48px',
+          }}>
+            浙大硕士 · 十年 product 经验 · 从零学 AI 开发
+            <br />
+            探索大模型与实用工具的深度融合，记录从 0 到 1 的每一个技术节点。
+          </p>
 
           {/* CTAs */}
-          <div className="hero-animate-delay-2" style={{
-            display: 'flex', gap: '12px',
-            justifyContent: 'center', flexWrap: 'wrap',
-          }}>
-            <a href="#projects" className="btn-glow">查看作品集</a>
-            <a href="#blog"     className="btn-ghost">阅读博客 →</a>
+          <div className="hero-animate-delay-3" style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', justifyContent: 'center' }}>
+            <a href="#projects" className="btn-primary">
+              查看作品集
+              <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>arrow_forward</span>
+            </a>
+            <a href="#blog" className="btn-secondary">
+              阅读博客
+              <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>description</span>
+            </a>
           </div>
         </div>
-      </section>
 
-      {/* ── STATS ─────────────────────────────────────────── */}
-      <div style={{
-        borderTop: '1px solid var(--bd)',
-        borderBottom: '1px solid var(--bd)',
-        background: 'var(--bg-1)',
-      }}>
+        {/* Stats Grid */}
         <div style={{
-          maxWidth: '880px', margin: '0 auto',
-          display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)',
+          position: 'relative', zIndex: 10,
+          width: '100%', maxWidth: '1200px', margin: '96px auto 0',
+          display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '24px',
         }}>
           {[
-            { n: String(projects.length), label: '已上线工具' },
-            { n: String(blogPosts.length), label: '博客文章' },
-            { n: '进行中', label: '学习阶段' },
+            { value: String(projects.length), label: '已上线工具' },
+            { value: String(blogPosts.length), label: '博客文章' },
+            { value: '进行中', label: '学习阶段' },
           ].map((s, i) => (
-            <div key={i} style={{
-              padding: '30px 24px',
-              textAlign: 'center',
-              borderRight: i < 2 ? '1px solid var(--bd)' : 'none',
+            <div key={i} className="floating-card" style={{
+              padding: '40px', display: 'flex', flexDirection: 'column', alignItems: 'center',
             }}>
               <div style={{
-                fontFamily: 'var(--mono)',
-                fontSize: '30px', fontWeight: 700,
-                color: 'var(--t1)', letterSpacing: '-0.04em',
-                marginBottom: '6px',
-              }}>{s.n}</div>
+                fontFamily: 'var(--font-display)',
+                fontSize: '48px', fontWeight: 800,
+                letterSpacing: '-0.02em',
+                color: 'var(--primary)', marginBottom: '8px',
+              }}>
+                {s.value}
+              </div>
               <div style={{
-                fontFamily: 'var(--mono)',
-                fontSize: '10px', color: 'var(--t2)',
-                letterSpacing: '0.08em', textTransform: 'uppercase',
-              }}>{s.label}</div>
+                fontSize: '13px', fontWeight: 600, letterSpacing: '0.1em',
+                color: 'var(--ink-subtle)', textTransform: 'uppercase',
+              }}>
+                {s.label}
+              </div>
             </div>
           ))}
         </div>
-      </div>
+      </header>
 
-      {/* ── PROJECTS ─────────────────────────────────────────── */}
-      <section id="projects" style={{ maxWidth: '960px', margin: '0 auto', padding: '96px 24px' }}>
-        <div className="section-label">
-          <span className="section-label-text">01 — PROJECTS</span>
-          <span className="section-label-line" />
-        </div>
-
-        <div style={{ marginBottom: '48px' }}>
-          <h2 style={{
-            fontSize: '36px', fontWeight: 800,
-            letterSpacing: '-0.04em', color: 'var(--t1)',
-            marginBottom: '10px', lineHeight: 1.1,
-          }}>作品集</h2>
-          <p style={{ fontSize: '14px', color: 'var(--t2)' }}>已上线的 AI 工具与项目</p>
+      {/* ── PROJECTS ── */}
+      <section id="projects" style={{ maxWidth: '1200px', margin: '0 auto', padding: 'var(--sp-section) 32px' }}>
+        <div style={{
+          display: 'flex', flexWrap: 'wrap', alignItems: 'flex-end', justifyContent: 'space-between',
+          gap: '16px', marginBottom: '64px',
+          borderBottom: '1px solid var(--hairline)', paddingBottom: '32px',
+        }}>
+          <div>
+            <p className="eyebrow" style={{ marginBottom: '16px' }}>Portfolio</p>
+            <h2 className="headline" style={{ marginBottom: '8px' }}>已上线的 AI 工具</h2>
+            <p style={{ fontSize: '16px', color: 'var(--ink-muted)' }}>从需求到部署，每个工具都有完整记录</p>
+          </div>
+          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '13px', fontWeight: 700, color: 'var(--primary)', opacity: 0.6 }}>
+            FILTER: ALL_SYSTEMS_ACTIVE
+          </span>
         </div>
 
         {projects.length === 0 ? (
           <div style={{
             padding: '80px 32px', textAlign: 'center',
-            border: '1px dashed rgba(124,106,255,0.15)',
-            borderRadius: 'var(--r-xl)',
-            color: 'var(--t3)',
+            border: '1px dashed var(--hairline-strong)', borderRadius: 'var(--r-lg)',
+            color: 'var(--ink-tertiary)', fontSize: '14px',
           }}>
-            <div style={{ fontSize: '32px', marginBottom: '12px' }}>🚀</div>
-            <p style={{ fontFamily: 'var(--mono)', fontSize: '12px', letterSpacing: '0.06em' }}>
-              PROJECTS COMING SOON
-            </p>
+            项目即将上线，敬请期待
           </div>
         ) : (
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(400px, 1fr))',
-            gap: '16px',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))',
+            gap: '24px',
           }}>
-            {projects.map((p) => <ProjectCard key={p.id} project={p} />)}
+            {projects.map((p, i) => <ProjectCard key={p.id} project={p} index={i} />)}
           </div>
         )}
       </section>
 
-      {/* ── BLOG ─────────────────────────────────────────── */}
+      {/* ── BLOG ── */}
       <section id="blog" style={{
-        background: 'var(--bg-1)',
-        borderTop: '1px solid var(--bd)',
+        borderTop: '1px solid var(--hairline)',
+        borderBottom: '1px solid var(--hairline)',
+        background: 'rgba(255,255,255,0.5)',
+        backdropFilter: 'blur(10px)',
       }}>
-        <div style={{ maxWidth: '960px', margin: '0 auto', padding: '96px 24px' }}>
-          <div className="section-label">
-            <span className="section-label-text">02 — BLOG</span>
-            <span className="section-label-line" />
-          </div>
-
-          <div style={{ marginBottom: '48px' }}>
-            <h2 style={{
-              fontSize: '36px', fontWeight: 800,
-              letterSpacing: '-0.04em', color: 'var(--t1)',
-              marginBottom: '10px', lineHeight: 1.1,
-            }}>博客</h2>
-            <p style={{ fontSize: '14px', color: 'var(--t2)' }}>学习笔记与项目复盘</p>
+        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: 'var(--sp-section) 32px' }}>
+          <div style={{ marginBottom: '64px', textAlign: 'center' }}>
+            <p className="eyebrow" style={{ marginBottom: '16px' }}>Engineer&apos;s Log</p>
+            <h2 className="headline" style={{ marginBottom: '8px' }}>学习笔记与项目复盘</h2>
+            <p style={{ fontSize: '16px', color: 'var(--ink-muted)' }}>记录每一个构建决策和踩坑经历</p>
           </div>
 
           {blogPosts.length === 0 ? (
             <div style={{
               padding: '80px 32px', textAlign: 'center',
-              border: '1px dashed rgba(124,106,255,0.15)',
-              borderRadius: 'var(--r-xl)',
-              color: 'var(--t3)',
+              border: '1px dashed var(--hairline-strong)', borderRadius: 'var(--r-lg)',
+              color: 'var(--ink-tertiary)', fontSize: '14px',
             }}>
-              <div style={{ fontSize: '32px', marginBottom: '12px' }}>✍️</div>
-              <p style={{ fontFamily: 'var(--mono)', fontSize: '12px', letterSpacing: '0.06em' }}>
-                FIRST POST COMING SOON
-              </p>
+              第一篇文章正在撰写中
             </div>
           ) : (
-            <div>
-              {blogPosts.map((post, i) => (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              {blogPosts.map((post) => (
                 <Link
                   key={post.id}
                   href={`/blog/${post.slug}`}
-                  className="row-hover"
+                  className="floating-card"
                   style={{
-                    display: 'grid',
-                    gridTemplateColumns: '40px 1fr 130px',
-                    gap: '20px', alignItems: 'center',
-                    padding: '22px 16px',
-                    borderBottom: '1px solid var(--bd)',
+                    display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between',
+                    gap: '24px', padding: '32px',
                     textDecoration: 'none', color: 'inherit',
-                    borderRadius: 'var(--r)',
-                    margin: '0 -16px',
                   }}
                 >
-                  {/* Index */}
-                  <span style={{
-                    fontFamily: 'var(--mono)', fontSize: '12px',
-                    color: 'var(--t3)', fontWeight: 600,
-                    letterSpacing: '0.02em',
-                  }}>
-                    {String(i + 1).padStart(2, '0')}
-                  </span>
-
-                  {/* Title + summary */}
-                  <div>
-                    <div style={{
-                      fontSize: '15px', fontWeight: 600,
-                      color: 'var(--t1)', marginBottom: '5px',
-                      letterSpacing: '-0.02em',
-                      lineHeight: 1.4,
-                    }}>
-                      {post.title}
-                    </div>
-                    {post.summary && (
-                      <div style={{
-                        fontSize: '13px', color: 'var(--t2)',
-                        lineHeight: 1.55,
-                      }}>
-                        {post.summary}
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Meta */}
-                  <div style={{
-                    display: 'flex', flexDirection: 'column',
-                    alignItems: 'flex-end', gap: '8px',
-                  }}>
-                    <span style={{
-                      fontFamily: 'var(--mono)', fontSize: '11px',
-                      color: 'var(--t3)',
-                    }}>{post.date}</span>
-                    <span className={post.status === '已发布' ? 'badge-green' : 'badge-muted'}>
-                      {post.status}
+                  <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '32px' }}>
+                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: '13px', fontWeight: 700, color: 'var(--primary)', opacity: 0.6 }}>
+                      {post.date}
                     </span>
+                    <div>
+                      <h4 style={{
+                        fontSize: '18px', fontWeight: 700,
+                        color: 'var(--ink)', letterSpacing: '-0.01em',
+                        marginBottom: '12px', lineHeight: 1.4,
+                      }}>
+                        {post.title}
+                      </h4>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+                        {post.tags.map((t) => <span key={t} className="tag-accent" style={{ borderRadius: 'var(--r-pill)', fontSize: '10px', fontWeight: 700, textTransform: 'uppercase', padding: '4px 12px' }}>{t}</span>)}
+                        <span className={post.status === '已发布' ? 'badge-primary' : 'badge-muted'}>
+                          {post.status}
+                        </span>
+                      </div>
+                    </div>
                   </div>
+                  <span className="material-symbols-outlined" style={{ color: 'var(--primary)', opacity: 0.5, fontSize: '28px' }}>
+                    chevron_right
+                  </span>
                 </Link>
               ))}
             </div>
@@ -290,77 +220,175 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ── FOOTER ─────────────────────────────────────────── */}
-      <footer style={{
-        padding: '40px 32px', textAlign: 'center',
-        borderTop: '1px solid var(--bd)',
-        background: 'var(--bg)',
-      }}>
-        <p style={{
-          fontFamily: 'var(--mono)', fontSize: '11px',
-          color: 'var(--t3)', letterSpacing: '0.06em',
+      {/* ── PERSONAL BIO (terminal card) ── */}
+      <section style={{ maxWidth: '860px', margin: '0 auto', padding: 'var(--sp-section) 32px' }}>
+        <div style={{
+          background: '#ffffff', borderRadius: 'var(--r-xl)',
+          border: '1px solid var(--hairline-strong)', overflow: 'hidden',
+          boxShadow: '0 20px 50px rgba(0,96,172,0.08)',
         }}>
-          © 2026–现在 [Lisa] · AI 产品经理个人站点 · 保留所有权利
-        </p>
+          <div style={{
+            background: 'rgba(0,96,172,0.05)', padding: '12px 24px',
+            display: 'flex', alignItems: 'center', gap: '8px',
+            borderBottom: '1px solid var(--hairline)',
+          }}>
+            <div style={{ display: 'flex', gap: '6px' }}>
+              <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#FF5F56' }} />
+              <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#FFBD2E' }} />
+              <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#27C93F' }} />
+            </div>
+            <span style={{
+              fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--primary)',
+              opacity: 0.6, marginLeft: '16px', textTransform: 'uppercase', letterSpacing: '0.2em', fontWeight: 700,
+            }}>
+              system_identity.exe
+            </span>
+          </div>
+          <div style={{ padding: '40px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
+              <span style={{ color: 'var(--primary)', fontWeight: 700 }}>#</span>
+              <p style={{ lineHeight: 1.75, color: 'var(--ink-muted)', fontSize: '16px' }}>
+                <strong style={{ color: 'var(--ink)' }}>Lisa, AI Product Manager.</strong> Focused on bridging the
+                gap between cutting-edge LLM capabilities and practical human needs. Engineering a world where AI
+                is not just a chatbot, but a functional extension of our creative and cognitive potential.
+              </p>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
+              <span style={{ color: 'var(--primary)', fontWeight: 700 }}>#</span>
+              <p style={{ lineHeight: 1.75, color: 'var(--ink-muted)', fontSize: '16px' }}>
+                <strong style={{ color: 'var(--ink)' }}>Experience:</strong> Zhejiang University Master&apos;s |
+                10+ Years Product Strategy &amp; Development.
+              </p>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <span style={{ color: 'var(--primary)', fontWeight: 700 }}>_</span>
+              <span style={{
+                display: 'inline-block', width: '10px', height: '22px',
+                background: 'var(--primary)', borderRadius: '2px',
+                animation: 'pulse-dot 1.4s ease-in-out infinite',
+              }} />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── CTA BANNER ── */}
+      <section style={{ padding: 'var(--sp-section) 32px', textAlign: 'center' }}>
+        <div style={{ maxWidth: '640px', margin: '0 auto' }}>
+          <h2 className="display-md" style={{ marginBottom: '16px' }}>有想法？聊聊合作</h2>
+          <p style={{ fontSize: '17px', color: 'var(--ink-muted)', lineHeight: 1.6, marginBottom: '40px' }}>
+            需求分析 · 企业 AI Agent 搭建 · 产品顾问
+            <br />
+            期待与您共同探索 AI 落地的新场景。
+          </p>
+          <a
+            href="mailto:penglisha456@163.com"
+            className="btn-primary"
+            style={{ fontSize: '16px', padding: '18px 40px', borderRadius: 'var(--r-lg)' }}
+          >
+            Let&apos;s Talk
+            <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>mail</span>
+          </a>
+        </div>
+      </section>
+
+      {/* ── FOOTER ── */}
+      <footer style={{
+        borderTop: '1px solid var(--hairline)',
+        padding: '80px 32px',
+      }}>
+        <div style={{
+          maxWidth: '1200px', margin: '0 auto',
+          display: 'flex', alignItems: 'center',
+          justifyContent: 'space-between', flexWrap: 'wrap', gap: '24px',
+        }}>
+          <div>
+            <div style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: '20px', fontWeight: 700,
+              letterSpacing: '-0.01em', color: 'var(--primary)',
+            }}>
+              iCareOld
+            </div>
+            <p style={{ fontSize: '12px', color: 'var(--ink-tertiary)', opacity: 0.8, marginTop: '4px' }}>
+              © 2026–现在 [Lisa] · AI 产品经理个人站点 · 保留所有权利
+            </p>
+          </div>
+          <div style={{ display: 'flex', gap: '32px', flexWrap: 'wrap' }}>
+            <Link href="/#projects" style={{ fontSize: '12px', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--ink-subtle)', textDecoration: 'none' }}>Works</Link>
+            <Link href="/#blog" style={{ fontSize: '12px', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--ink-subtle)', textDecoration: 'none' }}>Blog</Link>
+            <Link href="/about" style={{ fontSize: '12px', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--ink-subtle)', textDecoration: 'none' }}>About</Link>
+          </div>
+        </div>
       </footer>
     </>
   )
 }
 
-/* ── PROJECT CARD ─────────────────────────────────────────── */
-function ProjectCard({ project }: {
-  project: { id: string; emoji: string; name: string; description: string; tags: string[]; url: string }
+/* ── PROJECT CARD ── */
+function ProjectCard({ project, index }: {
+  project: { id: string; emoji: string; image: string; name: string; description: string; tags: string[]; url: string }
+  index: number
 }) {
   return (
-    <div className="card-premium" style={{ padding: '28px 28px 24px' }}>
-      {/* Emoji */}
+    <div className="floating-card" style={{ padding: '24px', display: 'flex', flexDirection: 'column', height: '100%' }}>
       <div style={{
-        width: '44px', height: '44px',
-        borderRadius: 'var(--r)',
-        background: 'var(--ac-dim)',
-        border: '1px solid var(--ac-border)',
+        aspectRatio: '16 / 9', width: '100%', borderRadius: 'var(--r-lg)',
+        marginBottom: '24px', position: 'relative', overflow: 'hidden',
+        background: project.image ? undefined : 'linear-gradient(135deg, rgba(0,96,172,0.12), rgba(96,165,250,0.20))',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
-        fontSize: '22px',
-        marginBottom: '18px',
       }}>
-        {project.emoji || '🚀'}
+        <span style={{
+          position: 'absolute', top: '12px', left: '12px', zIndex: 1,
+          padding: '4px 12px', background: 'rgba(255,255,255,0.9)', backdropFilter: 'blur(10px)',
+          borderRadius: 'var(--r-sm)', border: '1px solid var(--hairline)',
+          fontFamily: 'var(--font-mono)', fontSize: '11px', fontWeight: 700, color: 'var(--primary)',
+        }}>
+          PROJECT_{String(index + 1).padStart(2, '0')}
+        </span>
+        {project.image ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={project.image}
+            alt={project.name}
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+          />
+        ) : (
+          <span style={{ fontSize: '56px', lineHeight: 1 }}>{project.emoji || '🚀'}</span>
+        )}
       </div>
 
-      <h3 style={{
-        fontSize: '17px', fontWeight: 700,
-        color: 'var(--t1)', marginBottom: '8px',
-        letterSpacing: '-0.025em', lineHeight: 1.3,
-      }}>
+      <h3 className="card-title" style={{ marginBottom: '12px' }}>
         {project.name}
       </h3>
-
       <p style={{
-        fontSize: '13px', color: 'var(--t2)',
-        lineHeight: 1.65, marginBottom: '20px',
+        fontSize: '14px', color: 'var(--ink-muted)',
+        lineHeight: 1.6, marginBottom: '24px', flexGrow: 1,
       }}>
         {project.description}
       </p>
-
-      {project.tags.length > 0 && (
-        <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '20px' }}>
-          {project.tags.map((tag) => (
-            <span key={tag} className="tag">{tag}</span>
-          ))}
-        </div>
-      )}
-
-      {project.url && (
-        <a
-          href={project.url} target="_blank" rel="noopener noreferrer"
-          style={{
-            fontFamily: 'var(--mono)', fontSize: '12px',
-            color: 'var(--ac)', textDecoration: 'none',
-            letterSpacing: '0.02em', display: 'inline-flex', alignItems: 'center', gap: '4px',
-          }}
-        >
-          立即体验 →
-        </a>
-      )}
+      <div style={{
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        paddingTop: '20px', borderTop: '1px solid var(--hairline)',
+      }}>
+        {project.tags.length > 0 && (
+          <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+            {project.tags.map((t) => <span key={t} className="tag">{t}</span>)}
+          </div>
+        )}
+        {project.url && (
+          <a href={project.url} target="_blank" rel="noopener noreferrer"
+            style={{
+              fontSize: '13px', fontWeight: 700,
+              color: 'var(--primary)', textDecoration: 'none',
+              display: 'inline-flex', alignItems: 'center', gap: '4px',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            TRY <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>open_in_new</span>
+          </a>
+        )}
+      </div>
     </div>
   )
 }

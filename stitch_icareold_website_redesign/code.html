@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>iCareOld | Engineered for Intelligence</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&amp;family=JetBrains+Mono:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "background": "#f8f9ff",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-container": "#4b3500",
+                        "surface-container-high": "#dce9ff",
+                        "error": "#ba1a1a",
+                        "on-secondary-fixed-variant": "#43474b",
+                        "outline-variant": "#c1c7d3",
+                        "tertiary": "#7b5800",
+                        "on-primary-container": "#003a6b",
+                        "primary-fixed-dim": "#a4c9ff",
+                        "surface-container-highest": "#d5e3fc",
+                        "on-secondary-fixed": "#171c1f",
+                        "surface-bright": "#f8f9ff",
+                        "on-secondary-container": "#5e6367",
+                        "on-surface": "#0d1c2e",
+                        "on-primary-fixed": "#001c39",
+                        "on-primary": "#ffffff",
+                        "secondary": "#5a5f62",
+                        "on-error-container": "#93000a",
+                        "tertiary-fixed-dim": "#fabd34",
+                        "surface-tint": "#0060ac",
+                        "on-error": "#ffffff",
+                        "surface": "#f8f9ff",
+                        "error-container": "#ffdad6",
+                        "inverse-surface": "#233144",
+                        "surface-container-low": "#eff4ff",
+                        "surface-container": "#e6eeff",
+                        "primary-fixed": "#d4e3ff",
+                        "primary": "#0060ac",
+                        "secondary-fixed-dim": "#c3c7cb",
+                        "on-tertiary": "#ffffff",
+                        "inverse-on-surface": "#eaf1ff",
+                        "surface-variant": "#d5e3fc",
+                        "secondary-container": "#dce0e4",
+                        "tertiary-fixed": "#ffdea4",
+                        "outline": "#717783",
+                        "on-background": "#0d1c2e",
+                        "on-surface-variant": "#414751",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-fixed": "#dfe3e7",
+                        "tertiary-container": "#d19900",
+                        "primary-container": "#60a5fa",
+                        "on-tertiary-fixed-variant": "#5d4200",
+                        "on-tertiary-fixed": "#261900",
+                        "on-primary-fixed-variant": "#004883",
+                        "inverse-primary": "#a4c9ff",
+                        "surface-dim": "#ccdbf3"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "base": "8px",
+                        "section-gap": "80px",
+                        "container-max": "1200px",
+                        "gutter": "24px",
+                        "margin-mobile": "16px",
+                        "margin-desktop": "40px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "headline-xl": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "body-md": ["Inter"],
+                        "code-sm": ["JetBrains Mono"],
+                        "label-caps": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["14px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                        "code-sm": ["14px", {"lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #f8f9ff;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(96, 165, 250, 0.1) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(96, 165, 250, 0.05) 0px, transparent 50%);
+            background-attachment: fixed;
+        }
+        .floating-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 10px 30px rgba(0, 96, 172, 0.04);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .floating-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 96, 172, 0.08);
+            border-color: rgba(0, 96, 172, 0.2);
+        }
+        .text-soft-dark {
+            color: #414751;
+        }
+        @keyframes pulse-dot {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 96, 172, 0.4); }
+            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(0, 96, 172, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 96, 172, 0); }
+        }
+        .status-pulse {
+            animation: pulse-dot 2s infinite;
+        }
+    </style>
+</head>
+<body class="text-on-surface selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-white/70 backdrop-blur-xl border-b border-white/40 shadow-[0_20px_40px_rgba(0,0,0,0.04)]">
+<div class="flex justify-between items-center px-margin-desktop py-4 max-w-container-max mx-auto">
+<div class="font-headline-lg text-headline-lg font-bold text-primary">iCareOld</div>
+<div class="hidden md:flex items-center gap-8">
+<a class="font-body-md text-body-md text-primary border-b-2 border-primary pb-1" href="#portfolio">Works</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors duration-300" href="#blog">Blog</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors duration-300" href="#about">About</a>
+<button class="bg-primary text-on-primary px-6 py-2 rounded-xl hover:opacity-80 active:scale-95 transition-all font-body-md">Contact Me</button>
+</div>
+<div class="md:hidden">
+<span class="material-symbols-outlined text-primary">menu</span>
+</div>
+</div>
+</nav>
+<!-- Hero Section -->
+<header class="relative min-h-screen flex flex-col items-center justify-center pt-32 px-margin-mobile md:px-margin-desktop text-center overflow-hidden">
+<!-- Cloud Shader Background -->
+<!-- STITCH_SHADER_START:ANIMATION_17 class="absolute inset-0 w-full h-full" -->
+<div class="absolute inset-0 w-full h-full" style="display:block;">
+<canvas id="shader-canvas-ANIMATION_17" style="display:block;width:100%;height:100%"></canvas>
+<script>
+(function() {
+  const canvas = document.getElementById('shader-canvas-ANIMATION_17');
+
+  // Sync the WebGL drawing-buffer size with the CSS-driven layout size.
+  // This fires on initial layout and whenever the element is resized.
+  function syncSize() {
+    const w = canvas.clientWidth  || 1280;
+    const h = canvas.clientHeight || 720;
+    if (canvas.width !== w || canvas.height !== h) {
+      canvas.width  = w;
+      canvas.height = h;
+    }
+  }
+  if (typeof ResizeObserver !== 'undefined') {
+    new ResizeObserver(syncSize).observe(canvas);
+  }
+  syncSize();
+
+  const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+  if (!gl) return;
+  const vs = `attribute vec2 a_position;
+varying vec2 v_texCoord;
+void main() {
+  v_texCoord = a_position * 0.5 + 0.5;
+  gl_Position = vec4(a_position, 0.0, 1.0);
+}`;
+  const fs = `precision highp float;
+varying vec2 v_texCoord;
+uniform float u_time;
+uniform vec2 u_resolution;
+uniform vec2 u_mouse;
+
+// Simplex 2D noise for organic cloud shapes
+vec3 permute(vec3 x) { return mod(((x*34.0)+1.0)*x, 289.0); }
+
+float snoise(vec2 v){
+  const vec4 C = vec4(0.211324865405187, 0.366025403784439,
+           -0.577350269189626, 0.024390243902439);
+  vec2 i  = floor(v + dot(v, C.yy) );
+  vec2 x0 = v -   i + dot(i, C.xx);
+  vec2 i1;
+  i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
+  vec4 x12 = x0.xyxy + C.xxzz;
+  x12.xy -= i1;
+  i = mod(i, 289.0);
+  vec3 p = permute( permute( i.y + vec3(0.0, i1.y, 1.0 ))
+  + i.x + vec3(0.0, i1.x, 1.0 ));
+  vec3 m = max(0.5 - vec3(dot(x0,x0), dot(x12.xy,x12.xy),
+    dot(x12.zw,x12.zw)), 0.0);
+  m = m*m ;
+  m = m*m ;
+  vec3 x = 2.0 * fract(p * C.www) - 1.0;
+  vec3 h = abs(x) - 0.5;
+  vec3 ox = floor(x + 0.5);
+  vec3 a0 = x - ox;
+  m *= 1.79284291400159 - 0.85373472095314 * ( a0*a0 + h*h );
+  vec3 g;
+  g.x  = a0.x  * x0.x  + h.x  * x0.y;
+  g.yz = a0.yz * x12.xz + h.yz * x12.yw;
+  return 130.0 * dot(m, g);
+}
+
+void main() {
+    vec2 uv = v_texCoord;
+    vec2 p = uv;
+    
+    // Mouse interaction: subtle parallax shift
+    vec2 m = u_mouse / u_resolution;
+    p += (m - 0.5) * 0.08;
+
+    // Layered FBM-like noise for more defined cloud structures
+    float n = 0.0;
+    // Speed up time slightly (0.05 -> 0.12)
+    float t = u_time * 0.12;
+    
+    n += 0.500 * snoise(p * 1.5 + t * 0.4);
+    n += 0.250 * snoise(p * 3.0 + t * 0.6);
+    n += 0.125 * snoise(p * 6.0 + t * 0.9);
+    
+    // Normalize and sharpen the noise for "puffy" clouds
+    n = n * 0.5 + 0.5;
+    
+    // Sharpen the cloud edges (Contrast adjustment)
+    // Threshold and smoothstep to make clouds pop
+    float cloudThreshold = 0.35;
+    float cloudEdge = 0.45;
+    float cloudAlpha = smoothstep(cloudThreshold, cloudEdge, n);
+    
+    // Sky colors from Stratus System
+    vec3 skyTop = vec3(0.97, 0.98, 1.0);    // #f8f9ff (surface-bright)
+    vec3 skyBottom = vec3(0.80, 0.86, 0.95); // #ccdbf3 (surface-dim)
+    vec3 cloudColor = vec3(1.0, 1.0, 1.0);  // Pure white
+    
+    // Base sky gradient
+    vec3 baseSky = mix(skyBottom, skyTop, uv.y);
+    
+    // Vertical fading to prevent harsh edges at top/bottom
+    float verticalFade = smoothstep(0.0, 0.2, uv.y) * smoothstep(1.0, 0.7, uv.y);
+    cloudAlpha *= verticalFade;
+    
+    // Blend: Increased opacity (0.4 -> 0.75) for better visibility
+    vec3 finalColor = mix(baseSky, cloudColor, cloudAlpha * 0.75);
+    
+    // Subtle additive glow on the clouds
+    finalColor += cloudAlpha * 0.05;
+    
+    gl_FragColor = vec4(finalColor, 1.0);
+}`;
+  function cs(type, src) {
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    return s;
+  }
+  const prog = gl.createProgram();
+  gl.attachShader(prog, cs(gl.VERTEX_SHADER, vs));
+  gl.attachShader(prog, cs(gl.FRAGMENT_SHADER, fs));
+  gl.linkProgram(prog);
+  gl.useProgram(prog);
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+  const pos = gl.getAttribLocation(prog, 'a_position');
+  gl.enableVertexAttribArray(pos);
+  gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
+  const uTime = gl.getUniformLocation(prog, 'u_time');
+  const uRes = gl.getUniformLocation(prog, 'u_resolution');
+  const uMouse = gl.getUniformLocation(prog, 'u_mouse');
+
+  // u_mouse is in pixel coordinates matching u_resolution (ShaderToy convention).
+  // Shaders that need normalized coords should use: u_mouse / u_resolution.
+  let mouse = { x: canvas.width / 2, y: canvas.height / 2 };
+  window.addEventListener('mousemove', (event) => {
+    const rect = canvas.getBoundingClientRect();
+    if (rect.width && rect.height) {
+      const nx = (event.clientX - rect.left) / rect.width;
+      const ny = 1.0 - (event.clientY - rect.top) / rect.height;
+      mouse.x = nx * canvas.width;
+      mouse.y = ny * canvas.height;
+    }
+  });
+
+  function render(t) {
+    if (typeof ResizeObserver === 'undefined') syncSize();
+    gl.viewport(0, 0, canvas.width, canvas.height);
+    if (uTime) gl.uniform1f(uTime, t * 0.001);
+    if (uRes) gl.uniform2f(uRes, canvas.width, canvas.height);
+    if (uMouse) gl.uniform2f(uMouse, mouse.x, mouse.y);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    requestAnimationFrame(render);
+  }
+  render(0);
+})();
+</script>
+</div>
+<!-- STITCH_SHADER_END:ANIMATION_17 -->
+<div class="relative z-10 max-w-4xl mx-auto">
+<div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/60 backdrop-blur-md border border-primary/20 mb-8 shadow-sm">
+<span class="w-2 h-2 rounded-full bg-primary status-pulse"></span>
+<span class="font-label-caps text-label-caps text-primary uppercase tracking-wider">Building in Public · 2026</span>
+</div>
+<h1 class="font-headline-xl text-4xl md:text-6xl mb-6 text-on-surface leading-tight font-extrabold drop-shadow-sm">
+            做能用的 AI 工具，<br/>
+<span class="text-primary bg-gradient-to-r from-primary to-primary-container bg-clip-text text-transparent">把构建过程全部记录下来</span>
+</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-12 max-w-2xl mx-auto drop-shadow-sm">
+            浙大硕士 · 十年 product 经验 · 从零学 AI 开发<br/>
+            探索大模型与实用工具的深度融合，记录从 0 到 1 的每一个技术节点。
+        </p>
+<div class="flex flex-col md:flex-row gap-4 justify-center">
+<a class="px-8 py-4 bg-primary text-on-primary font-bold rounded-xl flex items-center justify-center gap-2 hover:shadow-lg hover:shadow-primary/20 transition-all" href="#portfolio">
+                查看作品集 <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</a>
+<a class="px-8 py-4 bg-white/90 backdrop-blur-md border border-primary/10 text-primary font-bold rounded-xl flex items-center justify-center gap-2 hover:bg-white transition-all shadow-sm" href="#blog">
+                阅读博客 <span class="material-symbols-outlined text-[20px]">description</span>
+</a>
+</div>
+</div>
+<!-- Stats Grid -->
+<div class="relative z-10 w-full max-w-container-max mx-auto mt-24 grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<div class="floating-card p-10 rounded-[2rem] flex flex-col items-center">
+<div class="text-5xl font-extrabold text-primary mb-2">5</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">已上线工具</div>
+</div>
+<div class="floating-card p-10 rounded-[2rem] flex flex-col items-center">
+<div class="text-5xl font-extrabold text-primary mb-2">14</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">博客文章</div>
+</div>
+<div class="floating-card p-10 rounded-[2rem] flex flex-col items-center">
+<div class="text-5xl font-extrabold text-primary mb-2">进行中</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">学习阶段</div>
+</div>
+</div>
+</header>
+<!-- Portfolio Section -->
+<section class="py-32 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto" id="portfolio">
+<div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-4 border-b border-primary/10 pb-8">
+<div>
+<div class="font-label-caps text-label-caps text-primary mb-4 uppercase tracking-[0.2em] font-bold">Portfolio</div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">已上线的 AI 工具</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2">从需求到部署，每个工具都有完整记录</p>
+</div>
+<span class="font-code-sm text-code-sm text-primary/60 font-bold">FILTER: ALL_SYSTEMS_ACTIVE</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+<!-- Card 1 -->
+<div class="floating-card p-6 rounded-[2rem] group cursor-pointer flex flex-col h-full">
+<div class="aspect-video w-full rounded-2xl mb-6 overflow-hidden relative shadow-sm">
+<div class="absolute top-3 left-3 z-10 px-3 py-1 bg-white/90 backdrop-blur-md rounded-lg border border-primary/10 font-code-sm text-primary text-[11px] font-bold">PROJECT_01</div>
+<img alt="A futuristic UI interface for an AI assistant" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDnJmY4as81TmM0NGg0GFm8_Kp_zgCTLfUV5MdktmqGoMont1jnR86Utq2C5uByxJexF2HZe14Ohk9cjqtmoNccfst3PMsWRNMTp6y7uGNH9LrvpuW1SG-bIKBdmfrY2POnuLnqOVYoymGkI675VzTit2uo2LRcdac3rybYezKb26U_euyIK6t0QYJrEzkmqgAEqj6YHS0fcMsTP23ia_kkoxa37PBvTHxXESiqgPr-t4wUbkyP_dJ3"/>
+</div>
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-primary text-[24px]">rocket_launch</span>
+<h3 class="font-headline-lg text-xl text-on-surface">陪玩飞行棋语音机器人</h3>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6 flex-grow">
+                机器人监听到“轮到你了”，自动扔骰子，并语音播报点数。妈妈再也不用担心娃吵着要陪下飞行棋了。
+            </p>
+<div class="flex items-center justify-between mt-auto pt-6 border-t border-primary/5">
+<div class="flex gap-2">
+<span class="px-3 py-1 bg-primary/10 rounded-full text-[10px] font-bold text-primary uppercase">Voice AI</span>
+<span class="px-3 py-1 bg-primary/10 rounded-full text-[10px] font-bold text-primary uppercase">Python</span>
+</div>
+<a class="text-primary font-bold text-sm hover:translate-x-1 transition-transform inline-flex items-center gap-1" href="https://dice.icareold.com/">TRY <span class="material-symbols-outlined text-[16px]">open_in_new</span></a>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="floating-card p-6 rounded-[2rem] group cursor-pointer flex flex-col h-full">
+<div class="aspect-video w-full rounded-2xl mb-6 overflow-hidden relative shadow-sm">
+<div class="absolute top-3 left-3 z-10 px-3 py-1 bg-white/90 backdrop-blur-md rounded-lg border border-primary/10 font-code-sm text-primary text-[11px] font-bold">PROJECT_02</div>
+<img alt="Data visualization dashboard" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBpUHGONR2lwBlRG9OBkH_Cqy4FiScmXJDs_-BWpvVtXUm3NYORHJy9t_MRvp5wkOWft1Zr612ZTrIs8W_fDeqd1AbHjUr-rPxINq0DkrsWGx0zxPpJ4OfQ28eklyUqElzXVhPgyyVqNB_Jwidn-mWCgHRG_EvuBaGKru4llQOJLW5ZeGgbbIUks4a8mDF-5OdOkM3zN_-648HUua-lM--8It2MCAKRmRqpPBSs02DnyWbuvCTPecxX"/>
+</div>
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-primary text-[24px]">terminal</span>
+<h3 class="font-headline-lg text-xl text-on-surface">数据分析Agent</h3>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6 flex-grow">
+                用 Python + Ollama 本地模型实现的自主数据分析 Agent，采用标准 ReAct 模式。完全离线运行。
+            </p>
+<div class="flex items-center justify-between mt-auto pt-6 border-t border-primary/5">
+<div class="flex gap-2">
+<span class="px-3 py-1 bg-primary/10 rounded-full text-[10px] font-bold text-primary uppercase">ReAct</span>
+<span class="px-3 py-1 bg-primary/10 rounded-full text-[10px] font-bold text-primary uppercase">Ollama</span>
+</div>
+<a class="text-primary font-bold text-sm hover:translate-x-1 transition-transform inline-flex items-center gap-1" href="#">GITHUB <span class="material-symbols-outlined text-[16px]">code</span></a>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="floating-card p-6 rounded-[2rem] group cursor-pointer flex flex-col h-full">
+<div class="aspect-video w-full rounded-2xl mb-6 overflow-hidden relative shadow-sm">
+<div class="absolute top-3 left-3 z-10 px-3 py-1 bg-white/90 backdrop-blur-md rounded-lg border border-primary/10 font-code-sm text-primary text-[11px] font-bold">PROJECT_03</div>
+<img alt="Video processing abstract" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDwv5FNP6dFKXbBs8vAzx9X8zbiBmcmtCmbOd7CyxE_PdsEkjMy08aHn5tMl_ZAMGnk1OztaUwzS3HdyLafGeKHhTTFi6y6Aenmbnu6p9VzB56Ismel5XYrxvtS2fFRzwZXznA44feRdY0dfBcPxylLz-QzDQ8XWkaVkM9o0YIAvzoxD5-KXrRugGd-kF6v5yHjvMkJZOWf4txwzeg_Sr9U9d3xxf35So5I9RTo7sFbBQ84WhBiahTi"/>
+</div>
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-primary text-[24px]">video_library</span>
+<h3 class="font-headline-lg text-xl text-on-surface">视频中文转英文</h3>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6 flex-grow">
+                上传中文视频，将视频翻译成英文语音，并加上英文字幕。实现一键跨语言内容分发。
+            </p>
+<div class="flex items-center justify-between mt-auto pt-6 border-t border-primary/5">
+<div class="flex gap-2">
+<span class="px-3 py-1 bg-primary/10 rounded-full text-[10px] font-bold text-primary uppercase">Whisper</span>
+<span class="px-3 py-1 bg-primary/10 rounded-full text-[10px] font-bold text-primary uppercase">Dubbing</span>
+</div>
+<a class="text-primary font-bold text-sm hover:translate-x-1 transition-transform inline-flex items-center gap-1" href="#">DOCS <span class="material-symbols-outlined text-[16px]">article</span></a>
+</div>
+</div>
+</div>
+</section>
+<!-- Blog Section -->
+<section class="py-32 bg-white/50 backdrop-blur-md border-y border-primary/5" id="blog">
+<div class="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+<div class="mb-16 text-center">
+<div class="font-label-caps text-label-caps text-primary mb-4 uppercase tracking-[0.2em] font-bold">Engineer's Log</div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">学习笔记与项目复盘</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2">记录每一个构建决策和踩坑经历</p>
+</div>
+<div class="flex flex-col gap-4">
+<!-- Log Entry 1 -->
+<a class="group flex flex-col md:flex-row md:items-center justify-between p-8 bg-white/70 rounded-2xl border border-transparent hover:border-primary/20 hover:shadow-lg transition-all" href="#">
+<div class="flex flex-col md:flex-row md:items-center gap-8">
+<div class="font-code-sm text-code-sm text-primary/50 group-hover:text-primary transition-colors font-bold">2026-07-16</div>
+<div>
+<h4 class="font-body-lg text-body-lg font-bold text-on-surface group-hover:text-primary transition-colors">我给工厂设备装了一个”AI老师傅”：一个轴承故障诊断 Agent 的产品拆解</h4>
+<div class="flex gap-3 mt-3">
+<span class="px-3 py-1 bg-surface-container rounded-full text-[10px] font-bold text-on-surface-variant uppercase">轴承故障诊断Agent</span>
+<span class="px-3 py-1 bg-primary text-white rounded-full text-[10px] font-bold uppercase">已发布</span>
+</div>
+</div>
+</div>
+<span class="material-symbols-outlined text-primary/40 group-hover:text-primary group-hover:translate-x-2 transition-all text-3xl">chevron_right</span>
+</a>
+<!-- Log Entry 2 -->
+<a class="group flex flex-col md:flex-row md:items-center justify-between p-8 bg-white/70 rounded-2xl border border-transparent hover:border-primary/20 hover:shadow-lg transition-all" href="#">
+<div class="flex flex-col md:flex-row md:items-center gap-8">
+<div class="font-code-sm text-code-sm text-primary/50 group-hover:text-primary transition-colors font-bold">2026-06-26</div>
+<div>
+<h4 class="font-body-lg text-body-lg font-bold text-on-surface group-hover:text-primary transition-colors">AI回答得很好，是真的吗？我用19道题测出了真相</h4>
+<div class="flex gap-3 mt-3">
+<span class="px-3 py-1 bg-surface-container rounded-full text-[10px] font-bold text-on-surface-variant uppercase">银行合规助手——Evals</span>
+<span class="px-3 py-1 bg-primary text-white rounded-full text-[10px] font-bold uppercase">已发布</span>
+</div>
+</div>
+</div>
+<span class="material-symbols-outlined text-primary/40 group-hover:text-primary group-hover:translate-x-2 transition-all text-3xl">chevron_right</span>
+</a>
+<!-- Log Entry 3 -->
+<a class="group flex flex-col md:flex-row md:items-center justify-between p-8 bg-white/70 rounded-2xl border border-transparent hover:border-primary/20 hover:shadow-lg transition-all" href="#">
+<div class="flex flex-col md:flex-row md:items-center gap-8">
+<div class="font-code-sm text-code-sm text-primary/50 group-hover:text-primary transition-colors font-bold">2026-06-22</div>
+<div>
+<h4 class="font-body-lg text-body-lg font-bold text-on-surface group-hover:text-primary transition-colors">我给 AI 装了一个"大脑"：从会聊天，到会干活</h4>
+<div class="flex gap-3 mt-3">
+<span class="px-3 py-1 bg-surface-container rounded-full text-[10px] font-bold text-on-surface-variant uppercase">银行合规助手——Agent</span>
+<span class="px-3 py-1 bg-primary text-white rounded-full text-[10px] font-bold uppercase">已发布</span>
+</div>
+</div>
+</div>
+<span class="material-symbols-outlined text-primary/40 group-hover:text-primary group-hover:translate-x-2 transition-all text-3xl">chevron_right</span>
+</a>
+</div>
+<div class="mt-16 text-center">
+<button class="px-8 py-4 border border-primary text-primary font-bold rounded-xl hover:bg-primary hover:text-white transition-all shadow-sm">View All Logs</button>
+</div>
+</div>
+</section>
+<!-- Personal Bio Section -->
+<section class="py-32 px-margin-mobile md:px-margin-desktop max-w-4xl mx-auto">
+<div class="bg-white rounded-3xl border border-primary/10 overflow-hidden shadow-xl">
+<div class="bg-primary/5 px-6 py-3 flex items-center gap-2 border-b border-primary/5">
+<div class="flex gap-1.5">
+<div class="w-3 h-3 rounded-full bg-[#FF5F56]"></div>
+<div class="w-3 h-3 rounded-full bg-[#FFBD2E]"></div>
+<div class="w-3 h-3 rounded-full bg-[#27C93F]"></div>
+</div>
+<span class="font-code-sm text-[11px] text-primary/60 ml-4 uppercase tracking-[0.2em] font-bold">system_identity.exe</span>
+</div>
+<div class="p-10 font-body-md text-on-surface-variant space-y-6">
+<div class="flex items-start gap-4">
+<span class="text-primary font-bold mt-1">#</span>
+<p class="leading-relaxed">
+<span class="font-bold text-on-surface">Lisa, AI Product Manager.</span> Focused on bridging the gap between cutting-edge LLM capabilities and practical human needs. Engineering a world where AI is not just a chatbot, but a functional extension of our creative and cognitive potential.
+                </p>
+</div>
+<div class="flex items-start gap-4">
+<span class="text-primary font-bold mt-1">#</span>
+<p class="leading-relaxed">
+<span class="font-bold text-on-surface">Experience:</span> Zhejiang University Master | 10 Years Product Strategy &amp; Development.
+                </p>
+</div>
+<div class="flex items-center gap-4">
+<span class="text-primary font-bold">_</span>
+<span class="block w-2.5 h-6 bg-primary animate-pulse rounded-sm"></span>
+</div>
+</div>
+</div>
+</section>
+<!-- Call to Action -->
+<section class="py-32 px-margin-mobile md:px-margin-desktop text-center relative overflow-hidden" id="about">
+<div class="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent pointer-events-none"></div>
+<div class="relative z-10 max-w-2xl mx-auto">
+<h2 class="font-headline-lg text-4xl mb-6 text-on-surface font-extrabold">有想法？聊聊合作</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-12">
+            需求分析 · 企业 AI Agent 搭建 · 产品顾问<br/>
+            期待与您共同探索 AI 落地的新场景。
+        </p>
+<a class="inline-block px-12 py-5 bg-primary text-on-primary font-bold text-lg rounded-2xl hover:scale-105 hover:shadow-2xl hover:shadow-primary/30 transition-all" href="mailto:hello@icareold.com">
+            Let's Talk <span class="material-symbols-outlined ml-2 align-middle">mail</span>
+</a>
+</div>
+</section>
+<!-- Footer -->
+<footer class="w-full py-section-gap bg-transparent border-t border-primary/5">
+<div class="flex flex-col md:flex-row justify-between items-center px-margin-desktop max-w-container-max mx-auto gap-base">
+<div class="flex flex-col items-center md:items-start gap-2">
+<div class="font-headline-lg text-headline-lg text-primary font-bold">iCareOld</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant opacity-70">© 2024 iCareOld. Built with weightless intelligence.</p>
+</div>
+<div class="flex flex-wrap justify-center gap-8">
+<a class="font-label-sm text-label-sm text-on-surface-variant opacity-70 hover:opacity-100 hover:text-primary transition-all font-bold uppercase tracking-widest" href="#">Works</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant opacity-70 hover:opacity-100 hover:text-primary transition-all font-bold uppercase tracking-widest" href="#">Blog</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant opacity-70 hover:opacity-100 hover:text-primary transition-all font-bold uppercase tracking-widest" href="#">About</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant opacity-70 hover:opacity-100 hover:text-primary transition-all font-bold uppercase tracking-widest" href="#">Contact</a>
+</div>
+</div>
+</footer>
+<script>
+    // Subtle scroll behavior for the navbar
+    window.addEventListener('scroll', () => {
+        const nav = document.querySelector('nav');
+        if (window.scrollY > 50) {
+            nav.classList.add('shadow-[0_20px_40px_rgba(0,0,0,0.08)]');
+            nav.querySelector('div').classList.add('py-3');
+            nav.querySelector('div').classList.remove('py-4');
+        } else {
+            nav.classList.remove('shadow-[0_20px_40px_rgba(0,0,0,0.08)]');
+            nav.querySelector('div').classList.add('py-4');
+            nav.querySelector('div').classList.remove('py-3');
+        }
+    });
+
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+
+    // Simple WebGL Shader Controller for the background
+    const shaderElements = document.querySelectorAll('webgl-shader');
+    shaderElements.forEach(container => {
+        const script = container.querySelector('script').textContent;
+        const canvas = document.createElement('canvas');
+        canvas.className = 'absolute inset-0 w-full h-full';
+        container.appendChild(canvas);
+        
+        const gl = canvas.getContext('webgl');
+        if (gl) {
+            const vsSource = `
+                attribute vec2 position;
+                varying vec2 v_texCoord;
+                void main() {
+                    v_texCoord = position * 0.5 + 0.5;
+                    gl_Position = vec4(position, 0.0, 1.0);
+                }
+            `;
+            
+            function createShader(gl, type, source) {
+                const shader = gl.createShader(type);
+                gl.shaderSource(shader, source);
+                gl.compileShader(shader);
+                if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+                    console.error('Shader compile error:', gl.getShaderInfoLog(shader));
+                    gl.deleteShader(shader);
+                    return null;
+                }
+                return shader;
+            }
+
+            const program = gl.createProgram();
+            gl.attachShader(program, createShader(gl, gl.VERTEX_SHADER, vsSource));
+            gl.attachShader(program, createShader(gl, gl.FRAGMENT_SHADER, script));
+            gl.linkProgram(program);
+            gl.useProgram(program);
+
+            const buffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+            
+            const posAttr = gl.getAttribLocation(program, "position");
+            gl.enableVertexAttribArray(posAttr);
+            gl.vertexAttribPointer(posAttr, 2, gl.FLOAT, false, 0, 0);
+
+            const timeLoc = gl.getUniformLocation(program, "u_time");
+            const resLoc = gl.getUniformLocation(program, "u_resolution");
+            const mouseLoc = gl.getUniformLocation(program, "u_mouse");
+
+            let mouseX = 0, mouseY = 0;
+            window.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = window.innerHeight - e.clientY;
+            });
+
+            function render(time) {
+                const w = canvas.clientWidth;
+                const h = canvas.clientHeight;
+                if (canvas.width !== w || canvas.height !== h) {
+                    canvas.width = w;
+                    canvas.height = h;
+                    gl.viewport(0, 0, w, h);
+                }
+                gl.uniform1f(timeLoc, time * 0.001);
+                gl.uniform2f(resLoc, w, h);
+                gl.uniform2f(mouseLoc, mouseX, mouseY);
+                gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+                requestAnimationFrame(render);
+            }
+            requestAnimationFrame(render);
+        }
+    });
+</script>
+</body></html>

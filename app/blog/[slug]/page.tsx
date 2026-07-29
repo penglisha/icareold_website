@@ -1,7 +1,6 @@
 import React from 'react'
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import { getBlogPostBySlug } from '@/lib/notion'
 import type { NotionBlock } from '@/lib/notion'
@@ -39,22 +38,23 @@ function richText(texts: RichTextItem[]) {
     if (t.annotations?.code)
       content = (
         <code key={i} style={{
-          fontFamily: 'var(--mono)', fontSize: '13px',
-          background: 'var(--bg-2)', border: '1px solid var(--bd)',
-          padding: '1px 5px', borderRadius: 'var(--r-xs)', color: 'var(--ac-2)',
+          fontFamily: 'var(--font-mono)', fontSize: '13px',
+          background: 'var(--surface-2)', border: '1px solid var(--hairline)',
+          padding: '1px 5px', borderRadius: 'var(--r-xs)', color: 'var(--primary)',
         }}>
           {content}
         </code>
       )
-    if (t.annotations?.bold)          content = <strong key={i}>{content}</strong>
+    if (t.annotations?.bold)          content = <strong key={i} style={{ color: 'var(--ink)', fontWeight: 600 }}>{content}</strong>
     if (t.annotations?.italic)        content = <em key={i}>{content}</em>
     if (t.annotations?.strikethrough) content = <s key={i}>{content}</s>
     if (t.href)
       content = (
         <a key={i} href={t.href} target="_blank" rel="noopener noreferrer"
           style={{
-            color: 'var(--ac)', textDecoration: 'none',
-            borderBottom: '1px solid var(--ac-border)', transition: 'border-color 0.15s',
+            color: 'var(--primary)', textDecoration: 'none',
+            borderBottom: '1px solid rgba(0,96,172,0.30)',
+            transition: 'border-color 0.15s',
           }}
         >
           {content}
@@ -71,15 +71,19 @@ function renderBlock(block: NotionBlock) {
   switch (block.type) {
     case 'paragraph':
       return (
-        <p style={{ marginBottom: '22px', lineHeight: 1.85, color: 'var(--t2)', fontSize: '16px' }}>
+        <p style={{
+          marginBottom: '22px', lineHeight: 1.75,
+          color: 'var(--ink-muted)', fontSize: '16px', letterSpacing: '-0.003em',
+        }}>
           {richText(b.paragraph?.rich_text)}
         </p>
       )
     case 'heading_1':
       return (
         <h1 style={{
-          fontSize: '26px', fontWeight: 700, letterSpacing: '-0.03em',
-          margin: '48px 0 16px', color: 'var(--t1)',
+          fontFamily: 'var(--font-display)',
+          fontSize: '26px', fontWeight: 600, letterSpacing: '-0.03em',
+          margin: '48px 0 16px', color: 'var(--ink)',
         }}>
           {richText(b.heading_1?.rich_text)}
         </h1>
@@ -87,8 +91,9 @@ function renderBlock(block: NotionBlock) {
     case 'heading_2':
       return (
         <h2 style={{
+          fontFamily: 'var(--font-display)',
           fontSize: '20px', fontWeight: 600, letterSpacing: '-0.02em',
-          margin: '40px 0 12px', color: 'var(--t1)',
+          margin: '40px 0 12px', color: 'var(--ink)',
         }}>
           {richText(b.heading_2?.rich_text)}
         </h2>
@@ -96,31 +101,38 @@ function renderBlock(block: NotionBlock) {
     case 'heading_3':
       return (
         <h3 style={{
+          fontFamily: 'var(--font-display)',
           fontSize: '16px', fontWeight: 600,
-          margin: '28px 0 10px', color: 'var(--t1)',
+          margin: '28px 0 10px', color: 'var(--ink)',
         }}>
           {richText(b.heading_3?.rich_text)}
         </h3>
       )
     case 'bulleted_list_item':
       return (
-        <li style={{ marginBottom: '6px', lineHeight: 1.78, color: 'var(--t2)', listStyleType: 'disc', fontSize: '15px' }}>
+        <li style={{
+          marginBottom: '6px', lineHeight: 1.75,
+          color: 'var(--ink-muted)', listStyleType: 'disc', fontSize: '15px',
+        }}>
           {richText(b.bulleted_list_item?.rich_text)}
         </li>
       )
     case 'numbered_list_item':
       return (
-        <li style={{ marginBottom: '6px', lineHeight: 1.78, color: 'var(--t2)', fontSize: '15px' }}>
+        <li style={{
+          marginBottom: '6px', lineHeight: 1.75,
+          color: 'var(--ink-muted)', fontSize: '15px',
+        }}>
           {richText(b.numbered_list_item?.rich_text)}
         </li>
       )
     case 'code':
       return (
         <pre style={{
-          background: 'var(--bg-1)', border: '1px solid var(--bd)',
-          borderRadius: 'var(--r)', padding: '20px 24px', margin: '24px 0',
-          overflowX: 'auto', fontFamily: 'var(--mono)',
-          fontSize: '13px', lineHeight: 1.65, color: 'var(--t2)',
+          background: 'var(--surface-1)', border: '1px solid var(--hairline)',
+          borderRadius: 'var(--r-lg)', padding: '20px 24px', margin: '24px 0',
+          overflowX: 'auto', fontFamily: 'var(--font-mono)',
+          fontSize: '13px', lineHeight: 1.65, color: 'var(--ink-muted)',
         }}>
           <code>{richText(b.code?.rich_text)}</code>
         </pre>
@@ -128,15 +140,15 @@ function renderBlock(block: NotionBlock) {
     case 'quote':
       return (
         <blockquote style={{
-          borderLeft: '2px solid var(--ac)',
+          borderLeft: '2px solid var(--primary)',
           paddingLeft: '20px', margin: '28px 0',
-          color: 'var(--t2)', fontStyle: 'italic', lineHeight: 1.75,
+          color: 'var(--ink-muted)', fontStyle: 'italic', lineHeight: 1.75,
         }}>
           {richText(b.quote?.rich_text)}
         </blockquote>
       )
     case 'divider':
-      return <hr style={{ border: 'none', borderTop: '1px solid var(--bd)', margin: '40px 0' }} />
+      return <hr style={{ border: 'none', borderTop: '1px solid var(--hairline)', margin: '40px 0' }} />
     case 'image': {
       const src = b.image?.type === 'external' ? b.image.external?.url : b.image?.file?.url
       if (!src) return null
@@ -144,19 +156,19 @@ function renderBlock(block: NotionBlock) {
       const captionStr = captionTexts.map((t) => t.plain_text).join('')
       return (
         <figure style={{ margin: '32px 0' }}>
-          <Image
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
             src={src} alt={captionStr || 'image'}
-            width={680} height={400}
             style={{
-              borderRadius: 'var(--r-lg)', width: '100%', height: 'auto',
-              objectFit: 'cover', border: '1px solid var(--bd)',
+              borderRadius: 'var(--r-xl)', width: '100%', height: 'auto',
+              display: 'block', border: '1px solid var(--hairline)',
             }}
           />
           {captionStr && (
             <figcaption style={{
               textAlign: 'center',
-              fontFamily: 'var(--mono)', fontSize: '11px',
-              color: 'var(--t3)', marginTop: '10px', letterSpacing: '0.04em',
+              fontFamily: 'var(--font-mono)', fontSize: '12px',
+              color: 'var(--ink-tertiary)', marginTop: '10px', letterSpacing: '0.02em',
             }}>
               {captionStr}
             </figcaption>
@@ -204,96 +216,85 @@ export default async function BlogPostPage({ params }: Props) {
 
   return (
     <>
-      {/* NAV */}
+      {/* ── NAV ── */}
       <nav style={{
-        position: 'sticky', top: 0, zIndex: 100, height: '56px',
-        background: 'rgba(6,6,9,0.75)',
-        backdropFilter: 'blur(24px)', WebkitBackdropFilter: 'blur(24px)',
-        borderBottom: '1px solid var(--bd)',
+        position: 'sticky', top: 0, zIndex: 100, height: '64px',
+        background: 'rgba(255,255,255,0.70)',
+        backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)',
+        borderBottom: '1px solid var(--hairline)',
         display: 'flex', alignItems: 'center',
-        padding: '0 32px', gap: '16px',
+        padding: '0 32px', gap: '12px',
       }}>
         <Link href="/#blog" style={{
-          fontFamily: 'var(--mono)', fontSize: '12px',
-          color: 'var(--ac)', textDecoration: 'none',
-          letterSpacing: '0.04em', display: 'flex', alignItems: 'center', gap: '6px',
+          fontSize: '14px', fontWeight: 500,
+          color: 'var(--primary)', textDecoration: 'none',
+          display: 'flex', alignItems: 'center', gap: '6px',
         }}>
           ← 博客
         </Link>
-        <span style={{ color: 'var(--bd-2)' }}>|</span>
+        <span style={{ color: 'var(--hairline-strong)', fontSize: '18px', lineHeight: 1 }}>|</span>
         <Link href="/" style={{
-          fontWeight: 700, fontSize: '14px',
-          color: 'var(--t1)', textDecoration: 'none',
-          letterSpacing: '-0.02em',
+          fontFamily: 'var(--font-display)',
+          fontWeight: 700, fontSize: '15px',
+          color: 'var(--primary)', textDecoration: 'none',
+          letterSpacing: '-0.01em',
         }}>
           iCareOld
         </Link>
       </nav>
 
-      {/* ARTICLE */}
-      <article style={{ maxWidth: '680px', margin: '0 auto', padding: '72px 24px 96px' }}>
+      {/* ── ARTICLE ── */}
+      <article style={{ maxWidth: '720px', margin: '0 auto', padding: '64px 32px 96px' }}>
 
         {/* Header */}
         <header style={{ marginBottom: '48px' }}>
           {post.tags.length > 0 && (
-            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '20px' }}>
+            <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '20px' }}>
               {post.tags.map((tag) => (
-                <span key={tag} style={{
-                  fontFamily: 'var(--mono)', fontSize: '10px',
-                  color: 'var(--ac)', background: 'var(--ac-dim)',
-                  border: '1px solid var(--ac-border)',
-                  padding: '3px 9px', borderRadius: 'var(--r-xs)',
-                  letterSpacing: '0.06em', textTransform: 'uppercase',
-                }}>
-                  {tag}
-                </span>
+                <span key={tag} className="tag-accent">{tag}</span>
               ))}
             </div>
           )}
-
-          <h1 className="text-gradient" style={{
+          <h1 style={{
+            fontFamily: 'var(--font-display)',
             fontSize: 'clamp(28px, 5vw, 44px)',
-            fontWeight: 800, letterSpacing: '-0.04em',
-            lineHeight: 1.12, marginBottom: '18px',
+            fontWeight: 600, letterSpacing: '-0.035em', lineHeight: 1.1,
+            color: 'var(--ink)', marginBottom: '16px',
           }}>
             {post.title}
           </h1>
-
           {post.summary && (
             <p style={{
-              fontSize: '17px', color: 'var(--t2)',
-              lineHeight: 1.7, marginBottom: '24px',
+              fontSize: '18px', color: 'var(--ink-muted)',
+              lineHeight: 1.55, letterSpacing: '-0.006em', marginBottom: '20px',
             }}>
               {post.summary}
             </p>
           )}
-
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <span style={{
-              fontFamily: 'var(--mono)', fontSize: '11px',
-              color: 'var(--t3)', letterSpacing: '0.04em',
-            }}>
-              {post.date}
-            </span>
-          </div>
+          <span style={{
+            fontFamily: 'var(--font-mono)',
+            fontSize: '12px', color: 'var(--ink-tertiary)', letterSpacing: '0.02em',
+          }}>
+            {post.date}
+          </span>
         </header>
 
-        {/* Divider */}
-        <hr style={{ border: 'none', borderTop: '1px solid var(--bd)', marginBottom: '48px' }} />
+        <hr style={{ border: 'none', borderTop: '1px solid var(--hairline)', marginBottom: '48px' }} />
 
         {/* Body */}
-        <div>{groupListItems(post.blocks)}</div>
+        <div style={{ fontSize: '16px', lineHeight: 1.75 }}>
+          {groupListItems(post.blocks)}
+        </div>
       </article>
 
-      {/* FOOTER */}
+      {/* ── FOOTER ── */}
       <footer style={{
-        padding: '40px 32px', textAlign: 'center',
-        borderTop: '1px solid var(--bd)', background: 'var(--bg)',
+        borderTop: '1px solid var(--hairline)',
+        padding: '40px 32px',
+        background: 'var(--canvas)',
+        textAlign: 'center',
       }}>
-        <p style={{
-          fontFamily: 'var(--mono)', fontSize: '11px',
-          color: 'var(--t3)', letterSpacing: '0.06em',
-        }}>
+        <p style={{ fontSize: '12px', color: 'var(--ink-tertiary)' }}>
           © 2026–现在 [Lisa] · AI 产品经理个人站点 · 保留所有权利
         </p>
       </footer>
