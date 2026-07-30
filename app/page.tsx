@@ -22,7 +22,7 @@ export default async function HomePage() {
       <header style={{
         position: 'relative', overflow: 'hidden',
         display: 'flex', flexDirection: 'column', alignItems: 'center',
-        padding: '160px 32px 96px', textAlign: 'center',
+        padding: 'var(--sp-hero-top) 32px var(--sp-hero-bottom)', textAlign: 'center',
       }}>
         <CloudShader />
 
@@ -87,22 +87,21 @@ export default async function HomePage() {
         </div>
 
         {/* Stats Grid */}
-        <div style={{
+        <div className="stats-grid" style={{
           position: 'relative', zIndex: 10,
           width: '100%', maxWidth: '1200px', margin: '96px auto 0',
-          display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '24px',
         }}>
           {[
             { value: String(projects.length), label: '已上线工具' },
             { value: String(blogPosts.length), label: '博客文章' },
             { value: '进行中', label: '学习阶段' },
           ].map((s, i) => (
-            <div key={i} className="floating-card" style={{
-              padding: '40px', display: 'flex', flexDirection: 'column', alignItems: 'center',
+            <div key={i} className="floating-card stat-item" style={{
+              display: 'flex', flexDirection: 'column', alignItems: 'center',
             }}>
               <div style={{
                 fontFamily: 'var(--font-display)',
-                fontSize: '48px', fontWeight: 800,
+                fontSize: 'clamp(32px, 8vw, 48px)', fontWeight: 800,
                 letterSpacing: '-0.02em',
                 color: 'var(--primary)', marginBottom: '8px',
               }}>
@@ -147,7 +146,7 @@ export default async function HomePage() {
         ) : (
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(min(340px, 100%), 1fr))',
             gap: '24px',
           }}>
             {projects.map((p, i) => <ProjectCard key={p.id} project={p} index={i} />)}
@@ -295,7 +294,7 @@ export default async function HomePage() {
       {/* ── FOOTER ── */}
       <footer style={{
         borderTop: '1px solid var(--hairline)',
-        padding: '80px 32px',
+        padding: 'var(--sp-footer) 32px',
       }}>
         <div style={{
           maxWidth: '1200px', margin: '0 auto',

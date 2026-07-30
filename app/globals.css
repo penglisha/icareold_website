@@ -62,6 +62,17 @@
   --sp-xxl: 48px;
   --sp-section: 128px;
 
+  /* Page-level vertical rhythm, overridden per breakpoint below - consumed
+     via var() in inline styles too, so a single media query here reflows
+     every page's hero/section/footer padding without touching the TSX. */
+  --sp-hero-top:     160px;
+  --sp-hero-bottom:  96px;
+  --sp-page-top:     80px;
+  --sp-page-bottom:  120px;
+  --sp-article-top:  64px;
+  --sp-article-bottom: 96px;
+  --sp-footer:       80px;
+
   /* ── Glass ── */
   --glass-blur: blur(12px);
   --glass-shadow: 0 10px 30px rgba(0,96,172,0.04);
@@ -157,7 +168,7 @@ body {
 }
 .headline {
   font-family: var(--font-display);
-  font-size: 32px;
+  font-size: clamp(24px, 5vw, 32px);
   font-weight: 600;
   line-height: 1.2;
   letter-spacing: -0.01em;
@@ -469,3 +480,59 @@ body {
 }
 .section-label-line { flex: 1; height: 1px; background: var(--hairline); }
 .badge-green  { display:inline-block; padding:2px 8px; border-radius:var(--r-pill); font-size:12px; color:var(--success);     border:1px solid rgba(39,166,68,0.22);  background:rgba(39,166,68,0.08); }
+
+/* ═══════════════════════════════════════════════════════════
+   NAV — desktop links vs. mobile hamburger menu
+═══════════════════════════════════════════════════════════ */
+.nav-logo { font-size: 32px; }
+.nav-links-desktop { display: flex; gap: 32px; align-items: center; }
+.nav-mobile-toggle { display: none; }
+.nav-mobile-menu { display: none; }
+
+/* ═══════════════════════════════════════════════════════════
+   STATS GRID (home page hero)
+═══════════════════════════════════════════════════════════ */
+.stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.stat-item { padding: 40px; }
+
+/* ═══════════════════════════════════════════════════════════
+   RESPONSIVE — MOBILE (≤768px)
+   Everything above is desktop-first; this is the single breakpoint
+   the whole site adapts at. Most page/section padding is already
+   driven by the --sp-* custom properties overridden here, so this
+   block alone reflows the hero, sections, and footer on every page
+   without touching their TSX.
+═══════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  :root {
+    --sp-section:        64px;
+    --sp-hero-top:        100px;
+    --sp-hero-bottom:     56px;
+    --sp-page-top:        48px;
+    --sp-page-bottom:     64px;
+    --sp-article-top:     40px;
+    --sp-article-bottom:  56px;
+    --sp-footer:          48px;
+  }
+
+  .nav-logo { font-size: 22px; }
+  .nav-links-desktop { display: none; }
+  .nav-mobile-toggle {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 40px; height: 40px; border: none; background: transparent;
+    color: var(--primary); cursor: pointer; border-radius: var(--r-md);
+    -webkit-tap-highlight-color: transparent;
+  }
+  .nav-mobile-toggle:hover { background: rgba(0,96,172,0.08); }
+  .nav-mobile-menu {
+    display: flex; flex-direction: column; gap: 2px;
+    max-height: 0; overflow: hidden; opacity: 0;
+    transition: max-height 0.25s ease, opacity 0.2s ease;
+  }
+  .nav-mobile-menu.open { max-height: 320px; opacity: 1; padding: 8px 24px 20px; }
+  .nav-mobile-menu .nav-link { padding: 10px 4px; font-size: 16px; }
+  .nav-mobile-menu .btn-primary { margin-top: 10px; justify-content: center; }
+
+  .stats-grid { grid-template-columns: 1fr; gap: 16px; }
+  .stat-item { padding: 24px; }
+}

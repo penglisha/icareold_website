@@ -13,6 +13,7 @@ type Tab = 'works' | 'blog' | 'about'
 export default function NavBar({ active: fixedActive }: { active?: 'about' }) {
   const [scrolled, setScrolled] = useState(false)
   const [scrollActive, setScrollActive] = useState<Tab | null>(null)
+  const [menuOpen, setMenuOpen] = useState(false)
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50)
@@ -50,6 +51,8 @@ export default function NavBar({ active: fixedActive }: { active?: 'about' }) {
       ? { color: 'var(--primary)', borderBottom: '2px solid var(--primary)', paddingBottom: '4px' }
       : undefined
 
+  const closeMenu = () => setMenuOpen(false)
+
   return (
     <nav
       style={{
@@ -67,16 +70,16 @@ export default function NavBar({ active: fixedActive }: { active?: 'about' }) {
         transition: 'padding 0.25s ease',
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
       }}>
-        <Link href="/" style={{
+        <Link href="/" className="nav-logo" style={{
           fontFamily: 'var(--font-display)',
-          fontWeight: 600, fontSize: '32px',
+          fontWeight: 600,
           color: 'var(--primary)', textDecoration: 'none',
           letterSpacing: '-0.01em',
         }}>
           iCareOld
         </Link>
 
-        <div style={{ display: 'flex', gap: '32px', alignItems: 'center' }}>
+        <div className="nav-links-desktop">
           <Link href="/#projects" className="nav-link" style={tabStyle('works')}>
             Works
           </Link>
@@ -94,6 +97,31 @@ export default function NavBar({ active: fixedActive }: { active?: 'about' }) {
             Contact Me
           </Link>
         </div>
+
+        <button
+          type="button"
+          className="nav-mobile-toggle"
+          aria-label={menuOpen ? '关闭菜单' : '打开菜单'}
+          aria-expanded={menuOpen}
+          onClick={() => setMenuOpen((v) => !v)}
+        >
+          <span className="material-symbols-outlined">{menuOpen ? 'close' : 'menu'}</span>
+        </button>
+      </div>
+
+      <div className={`nav-mobile-menu${menuOpen ? ' open' : ''}`}>
+        <Link href="/#projects" className="nav-link" style={tabStyle('works')} onClick={closeMenu}>
+          Works
+        </Link>
+        <Link href="/#blog" className="nav-link" style={tabStyle('blog')} onClick={closeMenu}>
+          Blog
+        </Link>
+        <Link href="/about" className="nav-link" style={tabStyle('about')} onClick={closeMenu}>
+          About
+        </Link>
+        <Link href="/about" className="btn-primary" onClick={closeMenu}>
+          Contact Me
+        </Link>
       </div>
     </nav>
   )

@@ -244,7 +244,7 @@ export default async function BlogPostPage({ params }: Props) {
       </nav>
 
       {/* ── ARTICLE ── */}
-      <article style={{ maxWidth: '720px', margin: '0 auto', padding: '64px 32px 96px' }}>
+      <article style={{ maxWidth: '720px', margin: '0 auto', padding: 'var(--sp-article-top) 32px var(--sp-article-bottom)' }}>
 
         {/* Header */}
         <header style={{ marginBottom: '48px' }}>

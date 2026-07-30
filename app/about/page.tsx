@@ -14,7 +14,7 @@ export default function AboutPage() {
       <NavBar active="about" />
 
       {/* ── MAIN ── */}
-      <main style={{ maxWidth: '720px', margin: '0 auto', padding: '80px 32px 120px' }}>
+      <main style={{ maxWidth: '720px', margin: '0 auto', padding: 'var(--sp-page-top) 32px var(--sp-page-bottom)' }}>
 
         {/* Profile */}
         <div style={{ marginBottom: '64px' }}>
