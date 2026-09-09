@@ -1,6 +1,7 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { getProjects, getBlogPosts } from '@/lib/notion'
-import { getDictionary, isLocale, type Locale } from '@/lib/i18n'
+import { buildAlternates, getDictionary, isLocale, ogLocale, SITE_URL, type Locale } from '@/lib/i18n'
 import NavBar from './NavBar'
 import Footer from './Footer'
 import CloudShader from '../CloudShader'
@@ -8,6 +9,25 @@ import CloudShader from '../CloudShader'
 export const runtime = 'edge'
 
 type Props = { params: Promise<{ locale: string }> }
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale: rawLocale } = await params
+  const locale: Locale = isLocale(rawLocale) ? rawLocale : 'zh'
+  const dict = await getDictionary(locale)
+  return {
+    title: dict.seo.home.title,
+    description: dict.seo.home.description,
+    alternates: buildAlternates(locale, ''),
+    openGraph: {
+      title: dict.seo.home.title,
+      description: dict.seo.home.description,
+      url: `${SITE_URL}/${locale}`,
+      siteName: 'iCareOld',
+      type: 'website',
+      ...ogLocale(locale),
+    },
+  }
+}
 
 export default async function HomePage({ params }: Props) {
   const { locale: rawLocale } = await params

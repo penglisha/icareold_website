@@ -21,6 +21,16 @@ export interface BlogPost {
   slug: string
 }
 
+// Notion's blog database has no per-post language field/flag yet - every
+// post is Chinese-only for now, so this always returns false. Once English
+// translations start shipping, replace this with a real check (e.g. a
+// dedicated Notion property or an "EN" tag) - every caller (blog list page,
+// blog detail page) already routes through this one function, so that's
+// the only place that needs to change.
+export function hasEnglishVersion(_post: BlogPost): boolean {
+  return false
+}
+
 export interface NotionBlock {
   id: string
   type: string

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter, JetBrains_Mono } from 'next/font/google'
 import '../globals.css'
-import { getDictionary, isLocale, type Locale } from '@/lib/i18n'
+import { getDictionary, isLocale, SITE_URL, type Locale } from '@/lib/i18n'
 
 export const runtime = 'edge'
 
@@ -33,18 +33,22 @@ const jetbrainsMono = JetBrains_Mono({
 
 type Props = { children: React.ReactNode; params: Promise<{ locale: string }> }
 
+// This is the site-wide fallback metadata - the home, about, and blog
+// pages all set their own generateMetadata that overrides this, so in
+// practice these values mostly matter for the brief moment before a page's
+// own metadata resolves (or for any future route that doesn't set its own).
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale: rawLocale } = await params
   const locale: Locale = isLocale(rawLocale) ? rawLocale : 'zh'
   const dict = await getDictionary(locale)
   return {
-    title: dict.meta.home.title,
-    description: dict.meta.home.description,
+    title: dict.seo.home.title,
+    description: dict.seo.home.description,
     icons: { icon: '/favicon.ico' },
     openGraph: {
-      title: dict.meta.home.title,
-      description: dict.meta.home.description,
-      url: 'https://icareold.com',
+      title: dict.seo.home.title,
+      description: dict.seo.home.description,
+      url: SITE_URL,
       siteName: 'iCareOld',
       type: 'website',
     },

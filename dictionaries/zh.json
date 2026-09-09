@@ -1,12 +1,12 @@
 {
-  "meta": {
+  "seo": {
     "home": {
-      "title": "iCareOld — AI 学习与工具",
-      "description": "用 AI 构建有意义的工具，记录真实的学习历程。"
+      "title": "iCareOld — AI 产品经理的独立开发工具箱",
+      "description": "AI 产品经理十年经验，从零学习 AI 开发，分享自建 AI 工具、AI Agent 实践与真实踩坑记录，一个独立开发者的成长笔记。"
     },
     "about": {
-      "title": "关于我 — iCareOld",
-      "description": "浙江大学农学硕士，十余年互联网产品经理经历，专注 AI 落地实践。"
+      "title": "关于 Lisa — AI 产品经理 · iCareOld 站长",
+      "description": "浙江大学硕士，十余年互联网产品经理经验，现专注 AI 工具开发与企业 AI Agent 落地，可承接需求分析与 AI 产品咨询。"
     }
   },
   "nav": {
@@ -44,7 +44,8 @@
     "eyebrow": "Engineer's Log",
     "title": "学习笔记与项目复盘",
     "subtitle": "记录每一个构建决策和踩坑经历",
-    "empty": "第一篇文章正在撰写中"
+    "empty": "第一篇文章正在撰写中",
+    "enComingSoon": "English posts coming soon"
   },
   "bio": {
     "terminalLabel": "system_identity.exe",

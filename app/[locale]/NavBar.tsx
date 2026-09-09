@@ -7,11 +7,18 @@ import type { Dictionary, Locale } from '@/lib/i18n'
 
 type Tab = 'works' | 'blog' | 'about'
 
-// `active="about"` is a fixed route, so it's passed in directly. On the
-// homepage no `active` prop is given at all - "works" and "blog" are just
-// scroll positions on the same page, so which one (if either) is
-// highlighted is derived from which section is currently centered in the
-// viewport, the same way a route change would highlight "about".
+// `active="about"`/`active="blog"` are fixed routes, so they're passed in
+// directly. On the homepage no `active` prop is given at all - "works" and
+// "blog" are just scroll positions on the same page there, so which one
+// (if either) is highlighted is derived from which section is currently
+// centered in the viewport, the same way a route change would highlight
+// "about"/"blog" elsewhere.
+//
+// Note: `active="blog"` only affects which tab is visually highlighted -
+// the "Blog" link itself still points at `/${locale}#blog` (the homepage
+// section) everywhere, including on the /blog list page itself. Pointing
+// it at the list page instead would be a navigation/IA change, out of
+// scope for the SEO work this was added for.
 export default function NavBar({
   locale,
   dict,
@@ -19,7 +26,7 @@ export default function NavBar({
 }: {
   locale: Locale
   dict: Dictionary['nav']
-  active?: 'about'
+  active?: 'about' | 'blog'
 }) {
   const [scrolled, setScrolled] = useState(false)
   const [scrollActive, setScrollActive] = useState<Tab | null>(null)

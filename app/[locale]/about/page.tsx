@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { getDictionary, isLocale, type Locale } from '@/lib/i18n'
+import { buildAlternates, getDictionary, isLocale, ogLocale, SITE_URL, type Locale } from '@/lib/i18n'
 import NavBar from '../NavBar'
 import Footer from '../Footer'
 
@@ -11,7 +11,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale: rawLocale } = await params
   const locale: Locale = isLocale(rawLocale) ? rawLocale : 'zh'
   const dict = await getDictionary(locale)
-  return { title: dict.meta.about.title, description: dict.meta.about.description }
+  return {
+    title: dict.seo.about.title,
+    description: dict.seo.about.description,
+    alternates: buildAlternates(locale, '/about'),
+    openGraph: {
+      title: dict.seo.about.title,
+      description: dict.seo.about.description,
+      url: `${SITE_URL}/${locale}/about`,
+      siteName: 'iCareOld',
+      type: 'website',
+      ...ogLocale(locale),
+    },
+  }
 }
 
 export default async function AboutPage({ params }: Props) {

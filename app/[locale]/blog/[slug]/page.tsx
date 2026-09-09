@@ -2,24 +2,32 @@ import React from 'react'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { getBlogPostBySlug } from '@/lib/notion'
+import { getBlogPostBySlug, hasEnglishVersion } from '@/lib/notion'
 import type { NotionBlock } from '@/lib/notion'
-import { getDictionary, isLocale, type Locale } from '@/lib/i18n'
+import { getDictionary, isLocale, SITE_URL, type Locale } from '@/lib/i18n'
 import Footer from '../../Footer'
 
 export const runtime = 'edge'
 
 type Props = { params: Promise<{ locale: string; slug: string }> }
 
+// Blog posts are Chinese-only for now (see hasEnglishVersion in
+// lib/notion.ts), so /en/blog/[slug] has nothing real to show - unlike
+// home/about, this page deliberately has no `alternates.languages`: there
+// is no en URL to point at yet, and the canonical always points at the zh
+// URL since that's the only version that actually exists.
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale: rawLocale, slug } = await params
   const locale: Locale = isLocale(rawLocale) ? rawLocale : 'zh'
   const dict = await getDictionary(locale)
   const post = await getBlogPostBySlug(slug)
-  if (!post) return { title: dict.blogPost.notFoundTitle }
+  if (!post || (locale === 'en' && !hasEnglishVersion(post))) {
+    return { title: dict.blogPost.notFoundTitle }
+  }
   return {
     title: `${post.title} — iCareOld`,
     description: post.summary,
+    alternates: { canonical: `${SITE_URL}/zh/blog/${slug}` },
   }
 }
 
@@ -218,7 +226,7 @@ export default async function BlogPostPage({ params }: Props) {
   const locale: Locale = isLocale(rawLocale) ? rawLocale : 'zh'
   const dict = await getDictionary(locale)
   const post = await getBlogPostBySlug(slug)
-  if (!post) notFound()
+  if (!post || (locale === 'en' && !hasEnglishVersion(post))) notFound()
 
   return (
     <>

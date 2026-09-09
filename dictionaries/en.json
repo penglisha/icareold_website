@@ -1,12 +1,12 @@
 {
-  "meta": {
+  "seo": {
     "home": {
-      "title": "iCareOld — AI Learning & Tools",
-      "description": "Building meaningful tools with AI, documenting a real learning journey."
+      "title": "iCareOld — AI Tools & Notes by an Indie AI PM",
+      "description": "10 years as a product manager, now learning AI development from scratch. Building AI tools and AI agents, documenting real lessons as an indie AI builder."
     },
     "about": {
-      "title": "About — iCareOld",
-      "description": "Zhejiang University master's degree, 10+ years as an internet product manager, now focused on applying AI in practice."
+      "title": "About Lisa — AI Product Manager · iCareOld",
+      "description": "Zhejiang University masters degree, 10+ years as a product manager, now focused on AI tools and enterprise AI agents. Available for consulting."
     }
   },
   "nav": {
@@ -44,7 +44,8 @@
     "eyebrow": "Engineer's Log",
     "title": "Learning Notes & Project Retros",
     "subtitle": "Recording every build decision and lesson learned",
-    "empty": "First post is in the works"
+    "empty": "First post is in the works",
+    "enComingSoon": "English posts coming soon"
   },
   "bio": {
     "terminalLabel": "system_identity.exe",
