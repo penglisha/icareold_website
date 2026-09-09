@@ -1,0 +1,84 @@
+{
+  "meta": {
+    "home": {
+      "title": "iCareOld — AI 学习与工具",
+      "description": "用 AI 构建有意义的工具，记录真实的学习历程。"
+    },
+    "about": {
+      "title": "关于我 — iCareOld",
+      "description": "浙江大学农学硕士，十余年互联网产品经理经历，专注 AI 落地实践。"
+    }
+  },
+  "nav": {
+    "works": "Works",
+    "blog": "Blog",
+    "about": "About",
+    "contact": "Contact Me",
+    "openMenu": "打开菜单",
+    "closeMenu": "关闭菜单"
+  },
+  "hero": {
+    "eyebrow": "Building in Public · 2026",
+    "titleLine1": "做能用的 AI 工具，",
+    "titleLine2": "把构建过程全部记录下来",
+    "subheadLine1": "浙大硕士 · 十年 product 经验 · 从零学 AI 开发",
+    "subheadLine2": "探索大模型与实用工具的深度融合，记录从 0 到 1 的每一个技术节点。",
+    "ctaPortfolio": "查看作品集",
+    "ctaBlog": "阅读博客"
+  },
+  "stats": {
+    "projects": "已上线工具",
+    "posts": "博客文章",
+    "learning": "学习阶段",
+    "inProgress": "进行中"
+  },
+  "projects": {
+    "eyebrow": "Portfolio",
+    "title": "已上线的 AI 工具",
+    "subtitle": "从需求到部署，每个工具都有完整记录",
+    "filterLabel": "FILTER: ALL_SYSTEMS_ACTIVE",
+    "empty": "项目即将上线，敬请期待",
+    "tryLabel": "TRY"
+  },
+  "blogSection": {
+    "eyebrow": "Engineer's Log",
+    "title": "学习笔记与项目复盘",
+    "subtitle": "记录每一个构建决策和踩坑经历",
+    "empty": "第一篇文章正在撰写中"
+  },
+  "bio": {
+    "terminalLabel": "system_identity.exe",
+    "line1Strong": "Lisa, AI Product Manager.",
+    "line1Rest": " Focused on bridging the gap between cutting-edge LLM capabilities and practical human needs. Engineering a world where AI is not just a chatbot, but a functional extension of our creative and cognitive potential.",
+    "line2Strong": "Experience:",
+    "line2Rest": " Zhejiang University Master's | 10+ Years Product Strategy & Development."
+  },
+  "cta": {
+    "title": "有想法？聊聊合作",
+    "subtitleLine1": "需求分析 · 企业 AI Agent 搭建 · 产品顾问",
+    "subtitleLine2": "期待与您共同探索 AI 落地的新场景。",
+    "button": "Let's Talk"
+  },
+  "footer": {
+    "copyright": "© 2026–现在 [Lisa] · AI 产品经理个人站点 · 保留所有权利",
+    "works": "Works",
+    "blog": "Blog",
+    "about": "About"
+  },
+  "about": {
+    "eyebrowAbout": "关于",
+    "role": "AI 产品经理 · iCareOld 站长",
+    "bioParagraph1": "浙江大学农学硕士，十余年互联网产品经理经历。",
+    "bioParagraph2": "深耕电商、金融、文娱、出行等多个行业，主导交付产品项目数百个。如今专注 AI 落地实践，探索 AI 工具开发与智能化产品设计的边界。",
+    "bioParagraph3": "可承接需求分析、企业 AI Agent 搭建等业务。",
+    "eyebrowContact": "联系我",
+    "wechatLabel": "微信 WeChat",
+    "emailLabel": "邮件 Email",
+    "qrCaption": "扫码添加微信",
+    "qrAlt": "微信二维码"
+  },
+  "blogPost": {
+    "back": "← 博客",
+    "notFoundTitle": "文章不存在"
+  }
+}

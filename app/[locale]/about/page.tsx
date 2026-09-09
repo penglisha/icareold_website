@@ -1,17 +1,27 @@
 import type { Metadata } from 'next'
+import { getDictionary, isLocale, type Locale } from '@/lib/i18n'
 import NavBar from '../NavBar'
+import Footer from '../Footer'
 
 export const runtime = 'edge'
 
-export const metadata: Metadata = {
-  title: '关于我 — iCareOld',
-  description: '浙江大学农学硕士，十余年互联网产品经理经历，专注 AI 落地实践。',
+type Props = { params: Promise<{ locale: string }> }
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale: rawLocale } = await params
+  const locale: Locale = isLocale(rawLocale) ? rawLocale : 'zh'
+  const dict = await getDictionary(locale)
+  return { title: dict.meta.about.title, description: dict.meta.about.description }
 }
 
-export default function AboutPage() {
+export default async function AboutPage({ params }: Props) {
+  const { locale: rawLocale } = await params
+  const locale: Locale = isLocale(rawLocale) ? rawLocale : 'zh'
+  const dict = await getDictionary(locale)
+
   return (
     <>
-      <NavBar active="about" />
+      <NavBar locale={locale} dict={dict.nav} active="about" />
 
       {/* ── MAIN ── */}
       <main style={{ maxWidth: '720px', margin: '0 auto', padding: 'var(--sp-page-top) 32px var(--sp-page-bottom)' }}>
@@ -37,7 +47,7 @@ export default function AboutPage() {
             Lisa
           </h1>
           <p style={{ fontSize: '16px', color: 'var(--ink-subtle)', letterSpacing: '-0.003em' }}>
-            AI 产品经理 · iCareOld 站长
+            {dict.about.role}
           </p>
         </div>
 
@@ -45,16 +55,16 @@ export default function AboutPage() {
 
         {/* Bio */}
         <section style={{ marginBottom: '64px' }}>
-          <p className="eyebrow" style={{ marginBottom: '20px' }}>关于</p>
+          <p className="eyebrow" style={{ marginBottom: '20px' }}>{dict.about.eyebrowAbout}</p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
             <p style={{ fontSize: '17px', lineHeight: 1.75, color: 'var(--ink-muted)', letterSpacing: '-0.005em' }}>
-              浙江大学农学硕士，十余年互联网产品经理经历。
+              {dict.about.bioParagraph1}
             </p>
             <p style={{ fontSize: '17px', lineHeight: 1.75, color: 'var(--ink-muted)', letterSpacing: '-0.005em' }}>
-              深耕电商、金融、文娱、出行等多个行业，主导交付产品项目数百个。如今专注 AI 落地实践，探索 AI 工具开发与智能化产品设计的边界。
+              {dict.about.bioParagraph2}
             </p>
             <p style={{ fontSize: '17px', lineHeight: 1.75, color: 'var(--ink-muted)', letterSpacing: '-0.005em' }}>
-              可承接需求分析、企业 AI Agent 搭建等业务。
+              {dict.about.bioParagraph3}
             </p>
           </div>
         </section>
@@ -63,7 +73,7 @@ export default function AboutPage() {
 
         {/* Contact */}
         <section>
-          <p className="eyebrow" style={{ marginBottom: '20px' }}>联系我</p>
+          <p className="eyebrow" style={{ marginBottom: '20px' }}>{dict.about.eyebrowContact}</p>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             {/* WeChat ID row */}
@@ -89,7 +99,7 @@ export default function AboutPage() {
                   color: 'var(--ink-tertiary)', textTransform: 'uppercase',
                   marginBottom: '4px',
                 }}>
-                  微信 WeChat
+                  {dict.about.wechatLabel}
                 </div>
                 <div style={{
                   fontFamily: 'var(--font-mono)',
@@ -126,7 +136,7 @@ export default function AboutPage() {
                     color: 'var(--ink-tertiary)', textTransform: 'uppercase',
                     marginBottom: '4px',
                   }}>
-                    邮件 Email
+                    {dict.about.emailLabel}
                   </div>
                   <div style={{
                     fontFamily: 'var(--font-mono)',
@@ -150,7 +160,7 @@ export default function AboutPage() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/wechat-qr.jpg"
-                alt="微信二维码"
+                alt={dict.about.qrAlt}
                 style={{
                   width: '180px', height: '180px',
                   borderRadius: 'var(--r-md)',
@@ -162,24 +172,14 @@ export default function AboutPage() {
                 fontSize: '12px', color: 'var(--ink-tertiary)',
                 letterSpacing: '0.04em',
               }}>
-                扫码添加微信
+                {dict.about.qrCaption}
               </p>
             </div>
           </div>
         </section>
       </main>
 
-      {/* ── FOOTER ── */}
-      <footer style={{
-        borderTop: '1px solid var(--hairline)',
-        padding: '40px 32px',
-        background: 'var(--canvas)',
-        textAlign: 'center',
-      }}>
-        <p style={{ fontSize: '12px', color: 'var(--ink-tertiary)' }}>
-          © 2026–现在 [Lisa] · AI 产品经理个人站点 · 保留所有权利
-        </p>
-      </footer>
+      <Footer locale={locale} dict={dict.footer} />
     </>
   )
 }

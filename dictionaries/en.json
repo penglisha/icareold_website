@@ -1,0 +1,84 @@
+{
+  "meta": {
+    "home": {
+      "title": "iCareOld — AI Learning & Tools",
+      "description": "Building meaningful tools with AI, documenting a real learning journey."
+    },
+    "about": {
+      "title": "About — iCareOld",
+      "description": "Zhejiang University master's degree, 10+ years as an internet product manager, now focused on applying AI in practice."
+    }
+  },
+  "nav": {
+    "works": "Works",
+    "blog": "Blog",
+    "about": "About",
+    "contact": "Contact Me",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu"
+  },
+  "hero": {
+    "eyebrow": "Building in Public · 2026",
+    "titleLine1": "Building AI tools that actually work,",
+    "titleLine2": "and documenting the whole build in public",
+    "subheadLine1": "Zhejiang University Master's · 10 years in product · learning AI dev from scratch",
+    "subheadLine2": "Exploring the deep integration of LLMs and practical tools, documenting every technical milestone from zero to one.",
+    "ctaPortfolio": "View Portfolio",
+    "ctaBlog": "Read the Blog"
+  },
+  "stats": {
+    "projects": "Live Tools",
+    "posts": "Blog Posts",
+    "learning": "Learning Stage",
+    "inProgress": "In Progress"
+  },
+  "projects": {
+    "eyebrow": "Portfolio",
+    "title": "AI Tools Shipped",
+    "subtitle": "From requirements to deployment, every tool is fully documented",
+    "filterLabel": "FILTER: ALL_SYSTEMS_ACTIVE",
+    "empty": "Projects launching soon, stay tuned",
+    "tryLabel": "TRY"
+  },
+  "blogSection": {
+    "eyebrow": "Engineer's Log",
+    "title": "Learning Notes & Project Retros",
+    "subtitle": "Recording every build decision and lesson learned",
+    "empty": "First post is in the works"
+  },
+  "bio": {
+    "terminalLabel": "system_identity.exe",
+    "line1Strong": "Lisa, AI Product Manager.",
+    "line1Rest": " Focused on bridging the gap between cutting-edge LLM capabilities and practical human needs. Engineering a world where AI is not just a chatbot, but a functional extension of our creative and cognitive potential.",
+    "line2Strong": "Experience:",
+    "line2Rest": " Zhejiang University Master's | 10+ Years Product Strategy & Development."
+  },
+  "cta": {
+    "title": "Have an idea? Let's talk",
+    "subtitleLine1": "Requirements analysis · Enterprise AI agent builds · Product consulting",
+    "subtitleLine2": "Looking forward to exploring new AI use cases together.",
+    "button": "Let's Talk"
+  },
+  "footer": {
+    "copyright": "© 2026–present [Lisa] · AI Product Manager's personal site · All rights reserved",
+    "works": "Works",
+    "blog": "Blog",
+    "about": "About"
+  },
+  "about": {
+    "eyebrowAbout": "About",
+    "role": "AI Product Manager · Founder of iCareOld",
+    "bioParagraph1": "Zhejiang University Master's in Agriculture, 10+ years as an internet product manager.",
+    "bioParagraph2": "Deep experience across e-commerce, fintech, entertainment, and mobility, having led hundreds of product deliveries. Now focused on applying AI in practice, exploring the frontier of AI tool development and intelligent product design.",
+    "bioParagraph3": "Available for requirements analysis, enterprise AI agent development, and related work.",
+    "eyebrowContact": "Contact",
+    "wechatLabel": "WeChat",
+    "emailLabel": "Email",
+    "qrCaption": "Scan to add on WeChat",
+    "qrAlt": "WeChat QR code"
+  },
+  "blogPost": {
+    "back": "← Blog",
+    "notFoundTitle": "Post not found"
+  }
+}

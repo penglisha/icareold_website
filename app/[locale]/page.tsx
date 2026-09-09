@@ -1,22 +1,23 @@
-import type { Metadata } from 'next'
 import Link from 'next/link'
 import { getProjects, getBlogPosts } from '@/lib/notion'
+import { getDictionary, isLocale, type Locale } from '@/lib/i18n'
 import NavBar from './NavBar'
-import CloudShader from './CloudShader'
+import Footer from './Footer'
+import CloudShader from '../CloudShader'
 
 export const runtime = 'edge'
 
-export const metadata: Metadata = {
-  title: 'iCareOld — AI 学习与工具',
-  description: '用 AI 构建有意义的工具，记录真实的学习历程。',
-}
+type Props = { params: Promise<{ locale: string }> }
 
-export default async function HomePage() {
+export default async function HomePage({ params }: Props) {
+  const { locale: rawLocale } = await params
+  const locale: Locale = isLocale(rawLocale) ? rawLocale : 'zh'
+  const dict = await getDictionary(locale)
   const [projects, blogPosts] = await Promise.all([getProjects(), getBlogPosts()])
 
   return (
     <>
-      <NavBar />
+      <NavBar locale={locale} dict={dict.nav} />
 
       {/* ── HERO ── */}
       <header style={{
@@ -36,7 +37,7 @@ export default async function HomePage() {
             marginBottom: '32px', boxShadow: '0 2px 8px rgba(0,0,0,0.03)',
           }}>
             <span className="status-pulse" style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--primary)' }} />
-            <span className="eyebrow" style={{ marginBottom: 0 }}>Building in Public · 2026</span>
+            <span className="eyebrow" style={{ marginBottom: 0 }}>{dict.hero.eyebrow}</span>
           </div>
 
           {/* Headline */}
@@ -49,7 +50,7 @@ export default async function HomePage() {
             color: 'var(--ink)',
             marginBottom: '24px',
           }}>
-            做能用的 AI 工具，
+            {dict.hero.titleLine1}
             <br />
             <span style={{
               background: 'linear-gradient(90deg, var(--primary), var(--brand-secure))',
@@ -57,7 +58,7 @@ export default async function HomePage() {
               backgroundClip: 'text',
               color: 'transparent',
             }}>
-              把构建过程全部记录下来
+              {dict.hero.titleLine2}
             </span>
           </h1>
 
@@ -68,19 +69,19 @@ export default async function HomePage() {
             color: 'var(--ink-muted)',
             maxWidth: '640px', margin: '0 auto 48px',
           }}>
-            浙大硕士 · 十年 product 经验 · 从零学 AI 开发
+            {dict.hero.subheadLine1}
             <br />
-            探索大模型与实用工具的深度融合，记录从 0 到 1 的每一个技术节点。
+            {dict.hero.subheadLine2}
           </p>
 
           {/* CTAs */}
           <div className="hero-animate-delay-3" style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', justifyContent: 'center' }}>
             <a href="#projects" className="btn-primary">
-              查看作品集
+              {dict.hero.ctaPortfolio}
               <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>arrow_forward</span>
             </a>
             <a href="#blog" className="btn-secondary">
-              阅读博客
+              {dict.hero.ctaBlog}
               <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>description</span>
             </a>
           </div>
@@ -92,9 +93,9 @@ export default async function HomePage() {
           width: '100%', maxWidth: '1200px', margin: '96px auto 0',
         }}>
           {[
-            { value: String(projects.length), label: '已上线工具' },
-            { value: String(blogPosts.length), label: '博客文章' },
-            { value: '进行中', label: '学习阶段' },
+            { value: String(projects.length), label: dict.stats.projects },
+            { value: String(blogPosts.length), label: dict.stats.posts },
+            { value: dict.stats.inProgress, label: dict.stats.learning },
           ].map((s, i) => (
             <div key={i} className="floating-card stat-item" style={{
               display: 'flex', flexDirection: 'column', alignItems: 'center',
@@ -126,12 +127,12 @@ export default async function HomePage() {
           borderBottom: '1px solid var(--hairline)', paddingBottom: '32px',
         }}>
           <div>
-            <p className="eyebrow" style={{ marginBottom: '16px' }}>Portfolio</p>
-            <h2 className="headline" style={{ marginBottom: '8px' }}>已上线的 AI 工具</h2>
-            <p style={{ fontSize: '16px', color: 'var(--ink-muted)' }}>从需求到部署，每个工具都有完整记录</p>
+            <p className="eyebrow" style={{ marginBottom: '16px' }}>{dict.projects.eyebrow}</p>
+            <h2 className="headline" style={{ marginBottom: '8px' }}>{dict.projects.title}</h2>
+            <p style={{ fontSize: '16px', color: 'var(--ink-muted)' }}>{dict.projects.subtitle}</p>
           </div>
           <span style={{ fontFamily: 'var(--font-mono)', fontSize: '13px', fontWeight: 700, color: 'var(--primary)', opacity: 0.6 }}>
-            FILTER: ALL_SYSTEMS_ACTIVE
+            {dict.projects.filterLabel}
           </span>
         </div>
 
@@ -141,7 +142,7 @@ export default async function HomePage() {
             border: '1px dashed var(--hairline-strong)', borderRadius: 'var(--r-lg)',
             color: 'var(--ink-tertiary)', fontSize: '14px',
           }}>
-            项目即将上线，敬请期待
+            {dict.projects.empty}
           </div>
         ) : (
           <div style={{
@@ -149,7 +150,7 @@ export default async function HomePage() {
             gridTemplateColumns: 'repeat(auto-fill, minmax(min(340px, 100%), 1fr))',
             gap: '24px',
           }}>
-            {projects.map((p, i) => <ProjectCard key={p.id} project={p} index={i} />)}
+            {projects.map((p, i) => <ProjectCard key={p.id} project={p} index={i} tryLabel={dict.projects.tryLabel} />)}
           </div>
         )}
       </section>
@@ -163,9 +164,9 @@ export default async function HomePage() {
       }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: 'var(--sp-section) 32px' }}>
           <div style={{ marginBottom: '64px', textAlign: 'center' }}>
-            <p className="eyebrow" style={{ marginBottom: '16px' }}>Engineer&apos;s Log</p>
-            <h2 className="headline" style={{ marginBottom: '8px' }}>学习笔记与项目复盘</h2>
-            <p style={{ fontSize: '16px', color: 'var(--ink-muted)' }}>记录每一个构建决策和踩坑经历</p>
+            <p className="eyebrow" style={{ marginBottom: '16px' }}>{dict.blogSection.eyebrow}</p>
+            <h2 className="headline" style={{ marginBottom: '8px' }}>{dict.blogSection.title}</h2>
+            <p style={{ fontSize: '16px', color: 'var(--ink-muted)' }}>{dict.blogSection.subtitle}</p>
           </div>
 
           {blogPosts.length === 0 ? (
@@ -174,14 +175,14 @@ export default async function HomePage() {
               border: '1px dashed var(--hairline-strong)', borderRadius: 'var(--r-lg)',
               color: 'var(--ink-tertiary)', fontSize: '14px',
             }}>
-              第一篇文章正在撰写中
+              {dict.blogSection.empty}
             </div>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               {blogPosts.map((post) => (
                 <Link
                   key={post.id}
-                  href={`/blog/${post.slug}`}
+                  href={`/${locale}/blog/${post.slug}`}
                   className="floating-card"
                   style={{
                     display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between',
@@ -240,23 +241,20 @@ export default async function HomePage() {
               fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--primary)',
               opacity: 0.6, marginLeft: '16px', textTransform: 'uppercase', letterSpacing: '0.2em', fontWeight: 700,
             }}>
-              system_identity.exe
+              {dict.bio.terminalLabel}
             </span>
           </div>
           <div style={{ padding: '40px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
             <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
               <span style={{ color: 'var(--primary)', fontWeight: 700 }}>#</span>
               <p style={{ lineHeight: 1.75, color: 'var(--ink-muted)', fontSize: '16px' }}>
-                <strong style={{ color: 'var(--ink)' }}>Lisa, AI Product Manager.</strong> Focused on bridging the
-                gap between cutting-edge LLM capabilities and practical human needs. Engineering a world where AI
-                is not just a chatbot, but a functional extension of our creative and cognitive potential.
+                <strong style={{ color: 'var(--ink)' }}>{dict.bio.line1Strong}</strong>{dict.bio.line1Rest}
               </p>
             </div>
             <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
               <span style={{ color: 'var(--primary)', fontWeight: 700 }}>#</span>
               <p style={{ lineHeight: 1.75, color: 'var(--ink-muted)', fontSize: '16px' }}>
-                <strong style={{ color: 'var(--ink)' }}>Experience:</strong> Zhejiang University Master&apos;s |
-                10+ Years Product Strategy &amp; Development.
+                <strong style={{ color: 'var(--ink)' }}>{dict.bio.line2Strong}</strong>{dict.bio.line2Rest}
               </p>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -274,60 +272,33 @@ export default async function HomePage() {
       {/* ── CTA BANNER ── */}
       <section style={{ padding: 'var(--sp-section) 32px', textAlign: 'center' }}>
         <div style={{ maxWidth: '640px', margin: '0 auto' }}>
-          <h2 className="display-md" style={{ marginBottom: '16px' }}>有想法？聊聊合作</h2>
+          <h2 className="display-md" style={{ marginBottom: '16px' }}>{dict.cta.title}</h2>
           <p style={{ fontSize: '17px', color: 'var(--ink-muted)', lineHeight: 1.6, marginBottom: '40px' }}>
-            需求分析 · 企业 AI Agent 搭建 · 产品顾问
+            {dict.cta.subtitleLine1}
             <br />
-            期待与您共同探索 AI 落地的新场景。
+            {dict.cta.subtitleLine2}
           </p>
           <a
             href="mailto:penglisha456@163.com"
             className="btn-primary"
             style={{ fontSize: '16px', padding: '18px 40px', borderRadius: 'var(--r-lg)' }}
           >
-            Let&apos;s Talk
+            {dict.cta.button}
             <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>mail</span>
           </a>
         </div>
       </section>
 
-      {/* ── FOOTER ── */}
-      <footer style={{
-        borderTop: '1px solid var(--hairline)',
-        padding: 'var(--sp-footer) 32px',
-      }}>
-        <div style={{
-          maxWidth: '1200px', margin: '0 auto',
-          display: 'flex', alignItems: 'center',
-          justifyContent: 'space-between', flexWrap: 'wrap', gap: '24px',
-        }}>
-          <div>
-            <div style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: '20px', fontWeight: 700,
-              letterSpacing: '-0.01em', color: 'var(--primary)',
-            }}>
-              iCareOld
-            </div>
-            <p style={{ fontSize: '12px', color: 'var(--ink-tertiary)', opacity: 0.8, marginTop: '4px' }}>
-              © 2026–现在 [Lisa] · AI 产品经理个人站点 · 保留所有权利
-            </p>
-          </div>
-          <div style={{ display: 'flex', gap: '32px', flexWrap: 'wrap' }}>
-            <Link href="/#projects" style={{ fontSize: '12px', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--ink-subtle)', textDecoration: 'none' }}>Works</Link>
-            <Link href="/#blog" style={{ fontSize: '12px', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--ink-subtle)', textDecoration: 'none' }}>Blog</Link>
-            <Link href="/about" style={{ fontSize: '12px', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--ink-subtle)', textDecoration: 'none' }}>About</Link>
-          </div>
-        </div>
-      </footer>
+      <Footer locale={locale} dict={dict.footer} variant="full" />
     </>
   )
 }
 
 /* ── PROJECT CARD ── */
-function ProjectCard({ project, index }: {
+function ProjectCard({ project, index, tryLabel }: {
   project: { id: string; emoji: string; image: string; name: string; description: string; tags: string[]; url: string }
   index: number
+  tryLabel: string
 }) {
   return (
     <div className="floating-card" style={{ padding: '24px', display: 'flex', flexDirection: 'column', height: '100%' }}>
@@ -384,7 +355,7 @@ function ProjectCard({ project, index }: {
               whiteSpace: 'nowrap',
             }}
           >
-            TRY <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>open_in_new</span>
+            {tryLabel} <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>open_in_new</span>
           </a>
         )}
       </div>

@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import LangSwitch from './LangSwitch'
+import type { Dictionary, Locale } from '@/lib/i18n'
 
 type Tab = 'works' | 'blog' | 'about'
 
@@ -10,7 +12,15 @@ type Tab = 'works' | 'blog' | 'about'
 // scroll positions on the same page, so which one (if either) is
 // highlighted is derived from which section is currently centered in the
 // viewport, the same way a route change would highlight "about".
-export default function NavBar({ active: fixedActive }: { active?: 'about' }) {
+export default function NavBar({
+  locale,
+  dict,
+  active: fixedActive,
+}: {
+  locale: Locale
+  dict: Dictionary['nav']
+  active?: 'about'
+}) {
   const [scrolled, setScrolled] = useState(false)
   const [scrollActive, setScrollActive] = useState<Tab | null>(null)
   const [menuOpen, setMenuOpen] = useState(false)
@@ -70,7 +80,7 @@ export default function NavBar({ active: fixedActive }: { active?: 'about' }) {
         transition: 'padding 0.25s ease',
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
       }}>
-        <Link href="/" className="nav-logo" style={{
+        <Link href={`/${locale}`} className="nav-logo" style={{
           fontFamily: 'var(--font-display)',
           fontWeight: 600,
           color: 'var(--primary)', textDecoration: 'none',
@@ -80,28 +90,29 @@ export default function NavBar({ active: fixedActive }: { active?: 'about' }) {
         </Link>
 
         <div className="nav-links-desktop">
-          <Link href="/#projects" className="nav-link" style={tabStyle('works')}>
-            Works
+          <Link href={`/${locale}#projects`} className="nav-link" style={tabStyle('works')}>
+            {dict.works}
           </Link>
-          <Link href="/#blog" className="nav-link" style={tabStyle('blog')}>
-            Blog
+          <Link href={`/${locale}#blog`} className="nav-link" style={tabStyle('blog')}>
+            {dict.blog}
           </Link>
-          <Link href="/about" className="nav-link" style={tabStyle('about')}>
-            About
+          <Link href={`/${locale}/about`} className="nav-link" style={tabStyle('about')}>
+            {dict.about}
           </Link>
           <Link
-            href="/about"
+            href={`/${locale}/about`}
             className="btn-primary"
             style={{ fontSize: '16px', fontWeight: 400, padding: '8px 24px' }}
           >
-            Contact Me
+            {dict.contact}
           </Link>
+          <LangSwitch locale={locale} />
         </div>
 
         <button
           type="button"
           className="nav-mobile-toggle"
-          aria-label={menuOpen ? '关闭菜单' : '打开菜单'}
+          aria-label={menuOpen ? dict.closeMenu : dict.openMenu}
           aria-expanded={menuOpen}
           onClick={() => setMenuOpen((v) => !v)}
         >
@@ -110,18 +121,19 @@ export default function NavBar({ active: fixedActive }: { active?: 'about' }) {
       </div>
 
       <div className={`nav-mobile-menu${menuOpen ? ' open' : ''}`}>
-        <Link href="/#projects" className="nav-link" style={tabStyle('works')} onClick={closeMenu}>
-          Works
+        <Link href={`/${locale}#projects`} className="nav-link" style={tabStyle('works')} onClick={closeMenu}>
+          {dict.works}
         </Link>
-        <Link href="/#blog" className="nav-link" style={tabStyle('blog')} onClick={closeMenu}>
-          Blog
+        <Link href={`/${locale}#blog`} className="nav-link" style={tabStyle('blog')} onClick={closeMenu}>
+          {dict.blog}
         </Link>
-        <Link href="/about" className="nav-link" style={tabStyle('about')} onClick={closeMenu}>
-          About
+        <Link href={`/${locale}/about`} className="nav-link" style={tabStyle('about')} onClick={closeMenu}>
+          {dict.about}
         </Link>
-        <Link href="/about" className="btn-primary" onClick={closeMenu}>
-          Contact Me
+        <Link href={`/${locale}/about`} className="btn-primary" onClick={closeMenu}>
+          {dict.contact}
         </Link>
+        <LangSwitch locale={locale} />
       </div>
     </nav>
   )

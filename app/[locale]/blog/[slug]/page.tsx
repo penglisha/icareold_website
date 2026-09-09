@@ -4,15 +4,19 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { getBlogPostBySlug } from '@/lib/notion'
 import type { NotionBlock } from '@/lib/notion'
+import { getDictionary, isLocale, type Locale } from '@/lib/i18n'
+import Footer from '../../Footer'
 
 export const runtime = 'edge'
 
-type Props = { params: Promise<{ slug: string }> }
+type Props = { params: Promise<{ locale: string; slug: string }> }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params
+  const { locale: rawLocale, slug } = await params
+  const locale: Locale = isLocale(rawLocale) ? rawLocale : 'zh'
+  const dict = await getDictionary(locale)
   const post = await getBlogPostBySlug(slug)
-  if (!post) return { title: '文章不存在' }
+  if (!post) return { title: dict.blogPost.notFoundTitle }
   return {
     title: `${post.title} — iCareOld`,
     description: post.summary,
@@ -210,7 +214,9 @@ function groupListItems(blocks: NotionBlock[]) {
 
 /* ── Page ──────────────────────────────────────────────── */
 export default async function BlogPostPage({ params }: Props) {
-  const { slug } = await params
+  const { locale: rawLocale, slug } = await params
+  const locale: Locale = isLocale(rawLocale) ? rawLocale : 'zh'
+  const dict = await getDictionary(locale)
   const post = await getBlogPostBySlug(slug)
   if (!post) notFound()
 
@@ -225,15 +231,15 @@ export default async function BlogPostPage({ params }: Props) {
         display: 'flex', alignItems: 'center',
         padding: '0 32px', gap: '12px',
       }}>
-        <Link href="/#blog" style={{
+        <Link href={`/${locale}#blog`} style={{
           fontSize: '14px', fontWeight: 500,
           color: 'var(--primary)', textDecoration: 'none',
           display: 'flex', alignItems: 'center', gap: '6px',
         }}>
-          ← 博客
+          {dict.blogPost.back}
         </Link>
         <span style={{ color: 'var(--hairline-strong)', fontSize: '18px', lineHeight: 1 }}>|</span>
-        <Link href="/" style={{
+        <Link href={`/${locale}`} style={{
           fontFamily: 'var(--font-display)',
           fontWeight: 700, fontSize: '15px',
           color: 'var(--primary)', textDecoration: 'none',
@@ -287,17 +293,7 @@ export default async function BlogPostPage({ params }: Props) {
         </div>
       </article>
 
-      {/* ── FOOTER ── */}
-      <footer style={{
-        borderTop: '1px solid var(--hairline)',
-        padding: '40px 32px',
-        background: 'var(--canvas)',
-        textAlign: 'center',
-      }}>
-        <p style={{ fontSize: '12px', color: 'var(--ink-tertiary)' }}>
-          © 2026–现在 [Lisa] · AI 产品经理个人站点 · 保留所有权利
-        </p>
-      </footer>
+      <Footer locale={locale} dict={dict.footer} />
     </>
   )
 }
