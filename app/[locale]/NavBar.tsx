@@ -100,7 +100,7 @@ export default function NavBar({
             {dict.about}
           </Link>
           <Link
-            href={`/${locale}/about`}
+            href={`/${locale}/about#contact`}
             className="btn-primary"
             style={{ fontSize: '16px', fontWeight: 400, padding: '8px 24px' }}
           >
@@ -130,7 +130,7 @@ export default function NavBar({
         <Link href={`/${locale}/about`} className="nav-link" style={tabStyle('about')} onClick={closeMenu}>
           {dict.about}
         </Link>
-        <Link href={`/${locale}/about`} className="btn-primary" onClick={closeMenu}>
+        <Link href={`/${locale}/about#contact`} className="btn-primary" onClick={closeMenu}>
           {dict.contact}
         </Link>
         <LangSwitch locale={locale} />

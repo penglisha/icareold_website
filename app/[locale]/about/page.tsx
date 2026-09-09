@@ -72,7 +72,7 @@ export default async function AboutPage({ params }: Props) {
         <hr style={{ border: 'none', borderTop: '1px solid var(--hairline)', marginBottom: '48px' }} />
 
         {/* Contact */}
-        <section>
+        <section id="contact">
           <p className="eyebrow" style={{ marginBottom: '20px' }}>{dict.about.eyebrowContact}</p>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
